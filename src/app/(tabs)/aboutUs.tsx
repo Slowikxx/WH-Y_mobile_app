@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { ThemeContext } from '../_layout';
 import Dropdown from '../../components/dropdown';
+import FilePicker from '../../components/filePicker';
 const AboutUs = () => {
 	const { colorScheme } = useContext(ThemeContext);
 	return (
@@ -18,10 +19,17 @@ const AboutUs = () => {
 					? require('../../../assets/images/whylight.png')
 					: require('../../../assets/images/whydark.png')
 			}
-		></ImageBackground>
+		>
+			<View style={styles.container}></View>
+		</ImageBackground>
 	);
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		alignItems: 'center',
+	},
+});
 
 export default AboutUs;

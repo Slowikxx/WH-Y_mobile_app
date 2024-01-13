@@ -58,7 +58,7 @@ const Input = ({
 								focused && colorScheme === 'light'
 									? '#BF1616'
 									: colorScheme === 'light'
-									? '#F0EEF0'
+									? '#B8B2B8'
 									: focused && colorScheme === 'dark'
 									? '#E74333'
 									: '#453845',

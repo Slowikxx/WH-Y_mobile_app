@@ -22,6 +22,7 @@ import AddWitness from '../../components/addWitness';
 import AddCulprit from '../../components/addCulprit';
 import IOSButtons from '../../components/iosButtons';
 import Dropdown from '../../components/dropdown';
+import FilePicker from '../../components/filePicker';
 
 export default function TabOneScreen() {
 	const [password, setPassword] = useState('');
@@ -263,7 +264,7 @@ export default function TabOneScreen() {
 								</View>
 							)}
 
-							{/* ZAŁĄCZNIK */}
+							<FilePicker />
 							<Input
 								max_words={500}
 								label="Hasło"
