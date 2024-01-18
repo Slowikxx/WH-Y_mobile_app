@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useState, useContext } from 'react';
 import { StyleSheet, View, Text, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
@@ -55,6 +55,7 @@ const MyAccount = () => {
 				</View>
 				<View style={{ gap: 10 }}>
 					<Button
+						onPress={() => navigation.navigate('showData')}
 						width={324}
 						height={44}
 						text="Pokaż moje dane"
@@ -63,6 +64,7 @@ const MyAccount = () => {
 						btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
 					/>
 					<Button
+						onPress={() => navigation.navigate('modifyData')}
 						width={324}
 						height={44}
 						text="Zmodyfikuj dane"
@@ -71,6 +73,7 @@ const MyAccount = () => {
 						btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
 					/>
 					<Button
+						onPress={() => navigation.navigate('changePassword')}
 						width={324}
 						height={44}
 						text="Zmień hasło"
@@ -79,7 +82,7 @@ const MyAccount = () => {
 						btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
 					/>
 					<Button
-						onPress={() => navigation.navigate('cases')}
+						onPress={() => navigation.navigate('index')}
 						width={324}
 						height={44}
 						text="Moje sprawy"

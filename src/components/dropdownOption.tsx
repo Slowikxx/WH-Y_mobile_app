@@ -2,10 +2,20 @@ import { useState, useContext } from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { ThemeContext } from '../app/_layout';
 import { Feather } from '@expo/vector-icons';
+import Checkbox from 'expo-checkbox';
 
 const DropdownOption = ({ mainText }: any) => {
 	const [isChecked, setIsChecked] = useState(false);
 	const { colorScheme } = useContext(ThemeContext);
+
+	const handlePress = () => {
+		if (isChecked) {
+			setIsChecked(false);
+		} else {
+			setIsChecked(true);
+			console.log(mainText);
+		}
+	};
 
 	return (
 		<View style={styles.container}>
@@ -17,7 +27,7 @@ const DropdownOption = ({ mainText }: any) => {
 			>
 				{mainText}
 			</Text>
-			<Pressable onPress={() => setIsChecked(!isChecked)}>
+			<Pressable onPress={handlePress}>
 				<Feather
 					name={isChecked ? 'check-square' : 'square'}
 					size={15}

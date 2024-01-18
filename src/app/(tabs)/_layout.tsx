@@ -102,7 +102,7 @@ export default function TabLayout() {
 				}}
 			>
 				<Tabs.Screen
-					name="cases"
+					name="index"
 					options={{
 						title: '',
 						tabBarIcon: ({ focused }) => (
@@ -194,6 +194,27 @@ export default function TabLayout() {
 					name="administration"
 					options={{
 						title: 'ADMINISTRACJA',
+						tabBarButton: (props) => <InvisibleTabBarButton {...props} />,
+					}}
+				/>
+				<Tabs.Screen
+					name="changePassword"
+					options={{
+						title: 'ZMIEŃ HASŁO',
+						tabBarButton: (props) => <InvisibleTabBarButton {...props} />,
+					}}
+				/>
+				<Tabs.Screen
+					name="modifyData"
+					options={{
+						title: 'ZMODYFIKUJ DANE',
+						tabBarButton: (props) => <InvisibleTabBarButton {...props} />,
+					}}
+				/>
+				<Tabs.Screen
+					name="showData"
+					options={{
+						title: 'POKAŻ DANE',
 						tabBarButton: (props) => <InvisibleTabBarButton {...props} />,
 					}}
 				/>

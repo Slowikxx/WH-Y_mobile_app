@@ -146,7 +146,7 @@ const Register = ({ name, setName, password, setPassword }: any) => {
 			<Button
 				width={320}
 				height={34}
-				text="Zarejestruj się"
+				text="Zaloguj się"
 				backgroundColor="transparent"
 				activeBackgroundColor="transparent"
 				active={true}

@@ -37,7 +37,7 @@ const SingleDropdown = ({ mainText }: any) => {
 			{open && (
 				<View style={[styles.wrapper]}>
 					<DropdownOption mainText="Przeciwko życiu " />
-					<DropdownOption mainText="Przeciwko życiu " />
+					<DropdownOption mainText="Przeciwko zdrowiu " />
 					<DropdownOption mainText="Przeciwko życiu " />
 					<DropdownOption mainText="Przeciwko życiu " />
 					<DropdownOption mainText="Przeciwko życiu " />
