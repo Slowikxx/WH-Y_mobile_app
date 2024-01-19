@@ -5,10 +5,12 @@ import {
 	Text,
 	ImageBackground,
 	ScrollView,
+	Platform,
 } from 'react-native';
 import { ThemeContext } from '../_layout';
-import Dropdown from '../../components/dropdown';
-import FilePicker from '../../components/filePicker';
+import FaqQuestion from '../../components/faqQuestion';
+import { faqQuestions } from '../../constants/constants';
+
 const AboutUs = () => {
 	const { colorScheme } = useContext(ThemeContext);
 	return (
@@ -20,15 +22,31 @@ const AboutUs = () => {
 					: require('../../../assets/images/whydark.png')
 			}
 		>
-			<View style={styles.container}></View>
+			<ScrollView style={styles.background}>
+				<View style={styles.container}>
+					{faqQuestions.map((question, index) => (
+						<FaqQuestion
+							key={index}
+							question={question.question}
+							answer={question.answer}
+						/>
+					))}
+				</View>
+			</ScrollView>
 		</ImageBackground>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: {
+	background: {
+		paddingTop: 20,
 		flex: 1,
-		alignItems: 'center',
+	},
+	container: {
+		gap: 15,
+		justifyContent: 'center',
+		paddingLeft: 40,
+		paddingRight: 20,
 	},
 });
 

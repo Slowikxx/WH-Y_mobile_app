@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { ThemeContext } from '../_layout';
 import { WebView } from 'react-native-webview';
+import { governmentLinks, ourLinks } from '../../constants/constants';
 
 const Webview = ({ linkName, uri }: any) => {
 	const [visible, setVisible] = useState(false);
@@ -117,22 +118,9 @@ const Administration = () => {
 								},
 							]}
 						>
-							<Webview
-								linkName="Link do strony rodo"
-								uri={'https://www.youtube.com/'}
-							/>
-							<Webview
-								linkName="Link do strony o fałszywych zeznaniach"
-								uri={'https://www.google.com/'}
-							/>
-							<Webview
-								linkName="Link do strony o odpowiedzialności karnej nieletnich"
-								uri={'https://www.apple.com/'}
-							/>
-							<Webview
-								linkName="Link do strony o obowiązku zawiadomienia o przestępstwie"
-								uri={'#'}
-							/>
+							{governmentLinks.map((link, index) => (
+								<Webview key={index} linkName={link.name} uri={link.link} />
+							))}
 						</View>
 					</View>
 					<View style={{ gap: 10 }}>
@@ -156,8 +144,9 @@ const Administration = () => {
 								},
 							]}
 						>
-							<Webview linkName="Link do regulaminu" uri={'#'} />
-							<Webview linkName="Link do polityki bezpieczeństwa" uri={'#'} />
+							{ourLinks.map((link, index) => (
+								<Webview key={index} linkName={link.name} uri={link.link} />
+							))}
 						</View>
 					</View>
 				</View>
