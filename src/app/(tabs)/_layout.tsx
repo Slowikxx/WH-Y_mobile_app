@@ -177,9 +177,9 @@ export default function TabLayout() {
 					}}
 				/>
 				<Tabs.Screen
-					name="aboutUs"
+					name="faq"
 					options={{
-						title: 'O NAS',
+						title: 'FAQ',
 						tabBarButton: (props) => <InvisibleTabBarButton {...props} />,
 					}}
 				/>

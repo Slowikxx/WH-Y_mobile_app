@@ -1,13 +1,47 @@
-import { useContext } from 'react';
+import { useState, useContext } from 'react';
 import {
 	StyleSheet,
 	View,
 	Text,
 	ImageBackground,
 	Platform,
+	Modal,
+	TouchableWithoutFeedback,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeContext } from '../_layout';
+import { WebView } from 'react-native-webview';
+
+const Webview = ({ linkName, uri }: any) => {
+	const [visible, setVisible] = useState(false);
+	const { colorScheme } = useContext(ThemeContext);
+
+	return (
+		<View>
+			<TouchableWithoutFeedback onPress={() => setVisible(true)}>
+				<Text
+					style={[
+						styles.mdText,
+						{
+							fontWeight: '600',
+							color: colorScheme === 'light' ? '#BF1616' : '#E74333',
+							textDecorationLine: 'underline',
+						},
+					]}
+				>
+					{linkName}
+				</Text>
+			</TouchableWithoutFeedback>
+			<Modal
+				visible={visible}
+				presentationStyle="pageSheet"
+				animationType="slide"
+				onRequestClose={() => setVisible(false)}
+			>
+				<WebView source={{ uri: uri }} />
+			</Modal>
+		</View>
+	);
+};
 
 const Administration = () => {
 	const { colorScheme } = useContext(ThemeContext);
@@ -83,54 +117,22 @@ const Administration = () => {
 								},
 							]}
 						>
-							<Text
-								style={[
-									styles.mdText,
-									{
-										fontWeight: '600',
-										color: colorScheme === 'light' ? '#BF1616' : '#E74333',
-										textDecorationLine: 'underline',
-									},
-								]}
-							>
-								link do strony rodo
-							</Text>
-							<Text
-								style={[
-									styles.mdText,
-									{
-										fontWeight: '600',
-										color: colorScheme === 'light' ? '#BF1616' : '#E74333',
-										textDecorationLine: 'underline',
-									},
-								]}
-							>
-								link do strony o fałszywych zeznaniach
-							</Text>
-							<Text
-								style={[
-									styles.mdText,
-									{
-										fontWeight: '600',
-										color: colorScheme === 'light' ? '#BF1616' : '#E74333',
-										textDecorationLine: 'underline',
-									},
-								]}
-							>
-								link do strony o odpowiedzialności karnej nieletnich
-							</Text>
-							<Text
-								style={[
-									styles.mdText,
-									{
-										fontWeight: '600',
-										color: colorScheme === 'light' ? '#BF1616' : '#E74333',
-										textDecorationLine: 'underline',
-									},
-								]}
-							>
-								link do strony o obowiązku zawiadomienia o przestępstwie
-							</Text>
+							<Webview
+								linkName="Link do strony rodo"
+								uri={'https://www.youtube.com/'}
+							/>
+							<Webview
+								linkName="Link do strony o fałszywych zeznaniach"
+								uri={'https://www.google.com/'}
+							/>
+							<Webview
+								linkName="Link do strony o odpowiedzialności karnej nieletnich"
+								uri={'https://www.apple.com/'}
+							/>
+							<Webview
+								linkName="Link do strony o obowiązku zawiadomienia o przestępstwie"
+								uri={'#'}
+							/>
 						</View>
 					</View>
 					<View style={{ gap: 10 }}>
@@ -154,30 +156,8 @@ const Administration = () => {
 								},
 							]}
 						>
-							<Text
-								style={[
-									styles.mdText,
-									{
-										fontWeight: '600',
-										color: colorScheme === 'light' ? '#BF1616' : '#E74333',
-										textDecorationLine: 'underline',
-									},
-								]}
-							>
-								link do regulaminu
-							</Text>
-							<Text
-								style={[
-									styles.mdText,
-									{
-										fontWeight: '600',
-										color: colorScheme === 'light' ? '#BF1616' : '#E74333',
-										textDecorationLine: 'underline',
-									},
-								]}
-							>
-								link do polityki bezpieczeństwa
-							</Text>
+							<Webview linkName="Link do regulaminu" uri={'#'} />
+							<Webview linkName="Link do polityki bezpieczeństwa" uri={'#'} />
 						</View>
 					</View>
 				</View>

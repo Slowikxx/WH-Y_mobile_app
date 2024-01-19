@@ -74,7 +74,7 @@ const TopNav = () => {
 				textColor={colorScheme === 'light' ? '#594E59' : '#978E97'}
 			/>
 			<NavButton
-				onPress={() => navigation.navigate('aboutUs')}
+				onPress={() => navigation.navigate('faq')}
 				iconName="users"
 				color={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 				text="O nas"
