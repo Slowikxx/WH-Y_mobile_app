@@ -1,25 +1,42 @@
+import { useContext } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { ThemeContext } from '../app/_layout';
 
 const IOSButtons = ({ confirmIOS, togglePicker }: any) => {
+	const { colorScheme } = useContext(ThemeContext);
 	return (
 		<View
 			style={{
 				flexDirection: 'row',
 				justifyContent: 'space-around',
+				width: 324,
 			}}
 		>
 			<TouchableOpacity
 				onPress={togglePicker}
 				style={[styles.btn, { backgroundColor: '#BF1616' }]}
 			>
-				<Text style={[styles.mdText, { color: '#F0EEF0' }]}>Anuluj</Text>
+				<Text
+					style={[
+						styles.mdText,
+						{ color: colorScheme === 'light' ? '#F0EEF0' : '#171017' },
+					]}
+				>
+					Anuluj
+				</Text>
 			</TouchableOpacity>
 			<TouchableOpacity
 				onPress={confirmIOS}
 				style={[styles.btn, { backgroundColor: '#168DBF' }]}
 			>
-				<Text style={[styles.mdText, { color: '#F0EEF0' }]}>Potwierdź</Text>
+				<Text
+					style={[
+						styles.mdText,
+						{ color: colorScheme === 'light' ? '#F0EEF0' : '#171017' },
+					]}
+				>
+					Potwierdź
+				</Text>
 			</TouchableOpacity>
 		</View>
 	);

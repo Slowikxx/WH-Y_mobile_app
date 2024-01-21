@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import {
 	StyleSheet,
 	View,
@@ -6,12 +6,10 @@ import {
 	ImageBackground,
 	ScrollView,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
-import Button from '../../components/button';
-import { useNavigation } from 'expo-router';
+import { AccountHeader, Button } from '../../components';
 import { ThemeContext } from '../_layout';
-import Input from '../../components/input';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const SingleData = ({ label, text }: any) => {
 	const { colorScheme } = useContext(ThemeContext);
@@ -55,8 +53,8 @@ const SingleData = ({ label, text }: any) => {
 };
 
 const ShowData = () => {
-	const navigation = useNavigation();
 	const { colorScheme } = useContext(ThemeContext);
+
 	return (
 		<ImageBackground
 			style={{ paddingTop: 20, flex: 1 }}
@@ -71,40 +69,7 @@ const ShowData = () => {
 				style={{ marginBottom: 50 }}
 			>
 				<View style={styles.background}>
-					<View
-						style={{
-							flexDirection: 'row',
-							width: '100%',
-							alignItems: 'center',
-							justifyContent: 'space-around',
-							marginTop: 50,
-							marginBottom: 100,
-						}}
-					>
-						<Text
-							style={[
-								styles.lgText,
-								{ color: colorScheme === 'light' ? '#BF1616' : '#E74333' },
-							]}
-						>
-							Imię / Imiona i nazwisko użytkownika
-						</Text>
-						<View
-							style={[
-								styles.circle,
-								{
-									backgroundColor:
-										colorScheme === 'light' ? '#F0EEF0' : '#171017',
-								},
-							]}
-						>
-							<Feather
-								name="plus"
-								size={32}
-								color={colorScheme === 'light' ? '#B8B2B8' : '#453845'}
-							/>
-						</View>
-					</View>
+					<AccountHeader />
 					<View style={{ gap: 10 }}>
 						<Button
 							width={324}
@@ -115,27 +80,29 @@ const ShowData = () => {
 							btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
 						/>
 
-						<SingleData label="Imię / Imiona" text="Jan" />
-						<SingleData label="Nazwisko" text="Kowalski" />
-						<SingleData label="PESEL" text="***********" />
-						<View>
-							<View style={styles.labelContainer}>
-								<Text style={styles.label}>Data urodzenia</Text>
+						<Animated.View entering={FadeInDown.duration(300)}>
+							<SingleData label="Imię / Imiona" text="Jan" />
+							<SingleData label="Nazwisko" text="Kowalski" />
+							<SingleData label="PESEL" text="***********" />
+							<View>
+								<View style={styles.labelContainer}>
+									<Text style={styles.label}>Data urodzenia</Text>
+								</View>
+								<Button
+									width={151}
+									height={44}
+									text={'dd-mm-rrrr'}
+									backgroundColor="#BF1616"
+									borderColor="#BF1616"
+									btnTextColor="#F0EEF0"
+								/>
 							</View>
-							<Button
-								width={151}
-								height={44}
-								text={'dd-mm-rrrr'}
-								backgroundColor="#BF1616"
-								borderColor="#BF1616"
-								btnTextColor="#F0EEF0"
-							/>
-						</View>
-						<SingleData label="Miasto zamieszkania" text="Kraków" />
-						<SingleData label="Ulica zamieszkania" text="Czarnowiejska" />
-						<SingleData label="Kod pocztowy zamieszkania" text="20-122" />
-						<SingleData label="Numer telefonu" text="+48 123 456 789" />
-						<SingleData label="Adres email" text="kowalski@gmail.com" />
+							<SingleData label="Miasto zamieszkania" text="Kraków" />
+							<SingleData label="Ulica zamieszkania" text="Czarnowiejska" />
+							<SingleData label="Kod pocztowy zamieszkania" text="20-122" />
+							<SingleData label="Numer telefonu" text="+48 123 456 789" />
+							<SingleData label="Adres email" text="kowalski@gmail.com" />
+						</Animated.View>
 					</View>
 				</View>
 			</ScrollView>
@@ -151,23 +118,6 @@ const styles = StyleSheet.create({
 	},
 	background: {
 		height: '100%',
-		alignItems: 'center',
-	},
-	lgText: {
-		fontFamily: 'Roboto',
-		fontSize: 20,
-		fontWeight: '800',
-		fontStyle: 'normal',
-		lineHeight: 26,
-		textAlign: 'center',
-		width: 243,
-	},
-	circle: {
-		width: 60,
-		height: 60,
-		borderRadius: 30,
-		padding: 10,
-		justifyContent: 'center',
 		alignItems: 'center',
 	},
 	container: {

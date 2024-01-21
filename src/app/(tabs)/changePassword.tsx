@@ -7,12 +7,10 @@ import {
 	TouchableWithoutFeedback,
 	Keyboard,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Feather } from '@expo/vector-icons';
-import Button from '../../components/button';
 import { useNavigation } from 'expo-router';
 import { ThemeContext } from '../_layout';
-import Input from '../../components/input';
+import { Input, Button, AccountHeader } from '../../components';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const ChangePassword = () => {
 	const navigation = useNavigation();
@@ -29,41 +27,11 @@ const ChangePassword = () => {
 				}
 			>
 				<View style={styles.background}>
-					<View
-						style={{
-							flexDirection: 'row',
-							width: '100%',
-							alignItems: 'center',
-							justifyContent: 'space-around',
-							marginTop: 50,
-							marginBottom: 100,
-						}}
+					<AccountHeader />
+					<Animated.View
+						entering={FadeInDown.duration(300)}
+						style={{ gap: 10 }}
 					>
-						<Text
-							style={[
-								styles.lgText,
-								{ color: colorScheme === 'light' ? '#BF1616' : '#E74333' },
-							]}
-						>
-							Imię / Imiona i nazwisko użytkownika
-						</Text>
-						<View
-							style={[
-								styles.circle,
-								{
-									backgroundColor:
-										colorScheme === 'light' ? '#F0EEF0' : '#171017',
-								},
-							]}
-						>
-							<Feather
-								name="plus"
-								size={32}
-								color={colorScheme === 'light' ? '#B8B2B8' : '#453845'}
-							/>
-						</View>
-					</View>
-					<View style={{ gap: 10 }}>
 						<Input
 							max_words={500}
 							label="Podaj stare hasło"
@@ -94,7 +62,7 @@ const ChangePassword = () => {
 							borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 							btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
 						/>
-					</View>
+					</Animated.View>
 				</View>
 			</ImageBackground>
 		</TouchableWithoutFeedback>
@@ -109,23 +77,6 @@ const styles = StyleSheet.create({
 	},
 	background: {
 		height: '100%',
-		alignItems: 'center',
-	},
-	lgText: {
-		fontFamily: 'Roboto',
-		fontSize: 20,
-		fontWeight: '800',
-		fontStyle: 'normal',
-		lineHeight: 26,
-		textAlign: 'center',
-		width: 243,
-	},
-	circle: {
-		width: 60,
-		height: 60,
-		borderRadius: 30,
-		padding: 10,
-		justifyContent: 'center',
 		alignItems: 'center',
 	},
 });

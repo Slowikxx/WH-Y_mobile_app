@@ -1,12 +1,5 @@
 import { useContext } from 'react';
-import {
-	StyleSheet,
-	View,
-	Text,
-	ImageBackground,
-	ScrollView,
-	Platform,
-} from 'react-native';
+import { StyleSheet, View, ImageBackground, ScrollView } from 'react-native';
 import { ThemeContext } from '../_layout';
 import FaqQuestion from '../../components/faqQuestion';
 import { faqQuestions } from '../../constants/constants';
@@ -22,7 +15,10 @@ const AboutUs = () => {
 					: require('../../../assets/images/whydark.png')
 			}
 		>
-			<ScrollView style={styles.background}>
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+				style={styles.background}
+			>
 				<View style={styles.container}>
 					{faqQuestions.map((question, index) => (
 						<FaqQuestion

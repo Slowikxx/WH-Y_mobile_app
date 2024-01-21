@@ -1,17 +1,8 @@
 import { useState } from 'react';
-import {
-	StyleSheet,
-	View,
-	Text,
-	ScrollView,
-	Platform,
-	TouchableOpacity,
-} from 'react-native';
-import Input from '../components/input';
-import Button from '../components/button';
+import { StyleSheet, View, Text, ScrollView, Platform } from 'react-native';
+import { Input, Button, IOSButtons } from '../components';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Feather } from '@expo/vector-icons';
-import IOSButtons from '../components/iosButtons';
 
 const Register = ({ name, setName, password, setPassword }: any) => {
 	const [date, setDate] = useState(new Date());

@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import Input from '../components/input';
-import Button from '../components/button';
+import { Input, Button } from '../components';
 import { useNavigation } from 'expo-router';
 import { ThemeContext } from './_layout';
 

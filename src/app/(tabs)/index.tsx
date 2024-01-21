@@ -1,12 +1,12 @@
 import { useContext } from 'react';
-import { StyleSheet, ImageBackground, View, ScrollView } from 'react-native';
-import Status from '../../components/status';
-import SearchBar from '../../components/searchBar';
-import { LinearGradient } from 'expo-linear-gradient';
+import { StyleSheet, ImageBackground, ScrollView } from 'react-native';
 import { ThemeContext } from '../_layout';
+import { Status, SearchBar } from '../../components';
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 
 export default function Cases() {
 	const { colorScheme } = useContext(ThemeContext);
+
 	return (
 		<ImageBackground
 			source={
@@ -14,10 +14,16 @@ export default function Cases() {
 					? require('../../../assets/images/whylight.png')
 					: require('../../../assets/images/whydark.png')
 			}
-			style={styles.background}
+			style={{ flex: 1 }}
 		>
-			<ScrollView style={styles.background}>
-				<View style={styles.container}>
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+				style={styles.background}
+			>
+				<Animated.View
+					entering={FadeInDown.duration(300)}
+					style={styles.container}
+				>
 					<SearchBar />
 					<Status
 						iconName="more-horizontal"
@@ -43,7 +49,7 @@ export default function Cases() {
 						textColor="#00CC1D"
 						statusText="zrealizowany"
 					/>
-				</View>
+				</Animated.View>
 			</ScrollView>
 		</ImageBackground>
 	);

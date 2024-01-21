@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { View, Text, ImageBackground } from 'react-native';
+import { ImageBackground } from 'react-native';
 import { ThemeContext } from '../_layout';
 
 const LegalInfo = () => {

@@ -11,18 +11,19 @@ import {
 	ImageBackground,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import Button from '../../components/button';
-import Input from '../../components/input';
-import { LinearGradient } from 'expo-linear-gradient';
+import {
+	Button,
+	Input,
+	Location,
+	AddPlace,
+	AddWitness,
+	AddCulprit,
+	IOSButtons,
+	Dropdown,
+	FilePicker,
+} from '../../components';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Location from '../../components/location';
-import AddPlace from '../../components/addPlace';
-import AddWitness from '../../components/addWitness';
-import AddCulprit from '../../components/addCulprit';
-import IOSButtons from '../../components/iosButtons';
-import Dropdown from '../../components/dropdown';
-import FilePicker from '../../components/filePicker';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 export default function TabOneScreen() {
 	const [password, setPassword] = useState('');
@@ -48,10 +49,11 @@ export default function TabOneScreen() {
 		if (type === 'set' && selectedTime) {
 			const currentTime = selectedTime;
 			setTime(currentTime);
-			setTimeString(formatTime(currentTime));
 
 			if (Platform.OS === 'android') {
 				toggleTimePicker();
+				setTime(currentTime);
+				setTimeString(formatTime(currentTime));
 			}
 		} else {
 			toggleTimePicker();
@@ -118,8 +120,11 @@ export default function TabOneScreen() {
 			}
 		>
 			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-				<ScrollView>
-					<View style={styles.background}>
+				<ScrollView showsVerticalScrollIndicator={false}>
+					<Animated.View
+						entering={FadeInDown.duration(500)}
+						style={styles.background}
+					>
 						<View style={styles.container}>
 							<View
 								style={{
@@ -200,6 +205,61 @@ export default function TabOneScreen() {
 									</View>
 								</View>
 							</View>
+							{showDatePicker && (
+								<View
+									style={{
+										width: 334,
+										backgroundColor:
+											colorScheme === 'light' ? '#F0EEF0' : '#171017',
+										borderRadius: 7.5,
+										padding: 10,
+									}}
+								>
+									<DateTimePicker
+										mode="date"
+										display="spinner"
+										value={date}
+										onChange={onChangeDate}
+										style={styles.picker}
+										textColor={colorScheme === 'light' ? 'black' : 'white'}
+									/>
+									{Platform.OS === 'ios' && (
+										<IOSButtons
+											confirmIOS={confirmIOSDate}
+											togglePicker={toggleDatePicker}
+										/>
+									)}
+								</View>
+							)}
+
+							{showTimePicker && (
+								<View
+									style={{
+										width: 334,
+										backgroundColor:
+											colorScheme === 'light' ? '#F0EEF0' : '#171017',
+										borderRadius: 7.5,
+										padding: 10,
+									}}
+								>
+									<DateTimePicker
+										mode="time"
+										display="spinner"
+										value={time}
+										onChange={onChangeTime}
+										style={styles.picker}
+										textColor={colorScheme === 'light' ? 'black' : 'white'}
+										is24Hour={true}
+									/>
+									{Platform.OS === 'ios' && (
+										<IOSButtons
+											confirmIOS={confirmIOSTime}
+											togglePicker={toggleTimePicker}
+										/>
+									)}
+								</View>
+							)}
+
 							<Location />
 							<Text
 								style={[
@@ -281,43 +341,8 @@ export default function TabOneScreen() {
 								borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 								btnTextColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 							/>
-							{showDatePicker && (
-								<DateTimePicker
-									mode="date"
-									display="spinner"
-									value={date}
-									onChange={onChangeDate}
-									style={styles.picker}
-									textColor="black"
-								/>
-							)}
-
-							{showDatePicker && Platform.OS === 'ios' && (
-								<IOSButtons
-									confirmIOS={confirmIOSDate}
-									togglePicker={toggleDatePicker}
-								/>
-							)}
-							{showTimePicker && (
-								<DateTimePicker
-									mode="time"
-									display="spinner"
-									value={time}
-									onChange={onChangeTime}
-									style={styles.picker}
-									textColor="black"
-									is24Hour={true}
-								/>
-							)}
-
-							{showTimePicker && Platform.OS === 'ios' && (
-								<IOSButtons
-									confirmIOS={confirmIOSTime}
-									togglePicker={toggleTimePicker}
-								/>
-							)}
 						</View>
-					</View>
+					</Animated.View>
 				</ScrollView>
 			</TouchableWithoutFeedback>
 		</ImageBackground>
@@ -360,9 +385,8 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 	},
 	picker: {
-		backgroundColor: '#D0E2EA',
 		height: 150,
-		marginTop: -180,
 		width: 324,
+		marginBottom: 10,
 	},
 });

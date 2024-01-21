@@ -9,10 +9,8 @@ import {
 	Keyboard,
 	ImageBackground,
 } from 'react-native';
-import Input from '../../components/input';
 import Login from '../login';
 import Register from '../register';
-import { LinearGradient } from 'expo-linear-gradient';
 
 export default function TabTwoScreen() {
 	const [name, setName] = useState('');

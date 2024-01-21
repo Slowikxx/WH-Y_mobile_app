@@ -1,6 +1,7 @@
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useState, useEffect, createContext } from 'react';
+import { ImageBackground } from 'react-native';
 
 export { ErrorBoundary } from 'expo-router';
 
