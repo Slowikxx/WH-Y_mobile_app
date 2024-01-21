@@ -21,6 +21,7 @@ import {
 	IOSButtons,
 	Dropdown,
 	FilePicker,
+	AddDescription,
 } from '../../components';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -33,8 +34,7 @@ export default function TabOneScreen() {
 	const [timeString, setTimeString] = useState('');
 	const [showDatePicker, setShowDatePicker] = useState(false);
 	const [showTimePicker, setShowTimePicker] = useState(false);
-	const [description, setDescription] = useState('');
-	const [showDescription, setShowDescription] = useState(false);
+
 	const { colorScheme } = useContext(ThemeContext);
 
 	const toggleDatePicker = () => {
@@ -274,8 +274,8 @@ export default function TabOneScreen() {
 							<AddPlace />
 							<AddWitness />
 							<AddCulprit />
-							<Dropdown mainText="Wybierz typ przestępstwa" />
-							<Dropdown mainText="Wybierz typ wykroczenia" />
+							<Dropdown mainText="Wybierz typ przestępstwa" type="crime" />
+							<Dropdown mainText="Wybierz typ wykroczenia" type="offense" />
 							<Text
 								style={[
 									styles.mdText,
@@ -286,44 +286,7 @@ export default function TabOneScreen() {
 							>
 								lub
 							</Text>
-							<Button
-								onPress={() => setShowDescription(true)}
-								width={324}
-								height={44}
-								text="Dodaj krótki opis"
-								backgroundColor={
-									colorScheme === 'light' ? '#168DBF' : '#33B1E7'
-								}
-								borderColor={colorScheme === 'light' ? '#168DBF' : '#33B1E7'}
-								btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
-							/>
-							{showDescription && (
-								<View>
-									<Input
-										max_words={500}
-										label="Krótki opis zdarzenia #1"
-										inputText={description}
-										setInputText={setDescription}
-										secureTextEntry={false}
-									/>
-									<Button
-										onPress={() => setShowDescription(false)}
-										width={324}
-										height={44}
-										text="Usuń opis"
-										backgroundColor={
-											colorScheme === 'light' ? '#BF1616' : '#E74333'
-										}
-										borderColor={
-											colorScheme === 'light' ? '#BF1616' : '#E74333'
-										}
-										btnTextColor={
-											colorScheme === 'light' ? '#F0EEF0' : '#171017'
-										}
-									/>
-								</View>
-							)}
-
+							<AddDescription />
 							<FilePicker />
 							<Input
 								max_words={500}
@@ -333,13 +296,27 @@ export default function TabOneScreen() {
 								secureTextEntry={true}
 							/>
 							<Button
-								onPress={() => setShowDescription(false)}
+								onPress={() => console.log('wysłano')}
 								width={324}
 								height={44}
-								text="Wyślij"
-								backgroundColor="transparent"
+								text="Wyślij sprawę"
+								backgroundColor={
+									colorScheme === 'light' && password.length >= 8
+										? '#BF1616'
+										: colorScheme === 'dark' && password.length >= 8
+										? '#E74333'
+										: 'transparent'
+								}
 								borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
-								btnTextColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
+								btnTextColor={
+									colorScheme === 'light' && password.length >= 8
+										? '#F0EEF0'
+										: colorScheme === 'light'
+										? '#BF1616'
+										: colorScheme === 'dark' && password.length >= 8
+										? '#171017'
+										: '#E74333'
+								}
 							/>
 						</View>
 					</Animated.View>
@@ -372,8 +349,8 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		gap: 13,
-		marginBottom: 100,
 		marginTop: 20,
+		marginBottom: 180,
 	},
 	mdText: {
 		fontFamily: 'Roboto',

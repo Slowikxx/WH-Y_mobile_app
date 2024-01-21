@@ -3,8 +3,9 @@ import { StyleSheet, View, Text, Platform, Pressable } from 'react-native';
 import { ThemeContext } from '../app/_layout';
 import { Feather } from '@expo/vector-icons';
 import SingleDropdown from './singleDropdown';
+import { crimes, offenses } from '../constants/constants';
 
-const Dropdown = ({ mainText }: any) => {
+const Dropdown = ({ mainText, type }: any) => {
 	const [open, setOpen] = useState(false);
 	const { colorScheme } = useContext(ThemeContext);
 
@@ -67,16 +68,26 @@ const Dropdown = ({ mainText }: any) => {
 				/>
 			</Pressable>
 
-			{open && (
+			{open && type === 'crime' && (
 				<View style={[styles.wrapper]}>
-					<SingleDropdown mainText="Przeciwko życiu i zdrowiu" />
-					<SingleDropdown mainText="Przeciwko życiu i zdrowiu" />
-					<SingleDropdown mainText="Przeciwko życiu i zdrowiu" />
-					<SingleDropdown mainText="Przeciwko życiu i zdrowiu" />
-					<SingleDropdown mainText="Przeciwko życiu i zdrowiu" />
-					<SingleDropdown mainText="Przeciwko życiu i zdrowiu" />
-					<SingleDropdown mainText="Przeciwko życiu i zdrowiu" />
-					<SingleDropdown mainText="Przeciwko życiu i zdrowiu" />
+					{crimes.map((crime, index) => (
+						<SingleDropdown
+							mainText={crime.name}
+							key={index}
+							values={crime.crimes}
+						/>
+					))}
+				</View>
+			)}
+			{open && type === 'offense' && (
+				<View style={[styles.wrapper]}>
+					{offenses.map((offense, index) => (
+						<SingleDropdown
+							mainText={offense.name}
+							key={index}
+							values={offense.offenses}
+						/>
+					))}
 				</View>
 			)}
 		</View>
@@ -85,9 +96,9 @@ const Dropdown = ({ mainText }: any) => {
 
 const styles = StyleSheet.create({
 	wrapper: {
-		flex: 1,
 		width: 320,
 		borderRadius: 7.5,
+		gap: 10,
 	},
 	container: {
 		width: 320,

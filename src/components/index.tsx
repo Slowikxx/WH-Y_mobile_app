@@ -15,6 +15,8 @@ import SingleDropdown from './singleDropdown';
 import Status from './status';
 import TopNav from './topNav';
 import AccountHeader from './accountHeader';
+import AddDescription from './addDescription';
+import AddToForm from './addToForm';
 
 export {
 	AddCulprit,
@@ -34,4 +36,6 @@ export {
 	Status,
 	TopNav,
 	AccountHeader,
+	AddDescription,
+	AddToForm,
 };

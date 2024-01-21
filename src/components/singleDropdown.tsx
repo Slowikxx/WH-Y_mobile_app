@@ -4,7 +4,7 @@ import { ThemeContext } from '../app/_layout';
 import { Feather } from '@expo/vector-icons';
 import DropdownOption from './dropdownOption';
 
-const SingleDropdown = ({ mainText }: any) => {
+const SingleDropdown = ({ mainText, values }: any) => {
 	const [open, setOpen] = useState(false);
 	const { colorScheme } = useContext(ThemeContext);
 
@@ -20,14 +20,17 @@ const SingleDropdown = ({ mainText }: any) => {
 					},
 				]}
 			>
-				<Text
-					style={[
-						styles.mainText,
-						{ color: colorScheme === 'light' ? '#594E59' : '#978E97' },
-					]}
-				>
-					{mainText}
-				</Text>
+				<View style={{ maxWidth: 280 }}>
+					<Text
+						style={[
+							styles.mainText,
+							{ color: colorScheme === 'light' ? '#594E59' : '#978E97' },
+						]}
+					>
+						{mainText}
+					</Text>
+				</View>
+
 				<Feather
 					name={open ? 'chevrons-up' : 'chevrons-down'}
 					size={15}
@@ -36,14 +39,9 @@ const SingleDropdown = ({ mainText }: any) => {
 			</Pressable>
 			{open && (
 				<View style={[styles.wrapper]}>
-					<DropdownOption mainText="Przeciwko życiu " />
-					<DropdownOption mainText="Przeciwko zdrowiu " />
-					<DropdownOption mainText="Przeciwko życiu " />
-					<DropdownOption mainText="Przeciwko życiu " />
-					<DropdownOption mainText="Przeciwko życiu " />
-					<DropdownOption mainText="Przeciwko życiu " />
-					<DropdownOption mainText="Przeciwko życiu " />
-					<DropdownOption mainText="Przeciwko życiu " />
+					{values.map((value, index) => (
+						<DropdownOption key={index} mainText={value} />
+					))}
 				</View>
 			)}
 		</View>
@@ -55,10 +53,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		width: 320,
 		borderRadius: 7.5,
+		gap: 10,
 	},
 	container: {
 		width: 320,
-		height: 36,
 		paddingHorizontal: 10,
 		borderRadius: 7.5,
 		alignItems: 'center',

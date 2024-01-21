@@ -19,14 +19,17 @@ const DropdownOption = ({ mainText }: any) => {
 
 	return (
 		<View style={styles.container}>
-			<Text
-				style={[
-					styles.mainText,
-					{ color: colorScheme === 'light' ? '#594E59' : '#978E97' },
-				]}
-			>
-				{mainText}
-			</Text>
+			<View style={{ maxWidth: 260 }}>
+				<Text
+					style={[
+						styles.mainText,
+						{ color: colorScheme === 'light' ? '#594E59' : '#978E97' },
+					]}
+				>
+					{mainText}
+				</Text>
+			</View>
+
 			<Pressable onPress={handlePress}>
 				<Feather
 					name={isChecked ? 'check-square' : 'square'}
@@ -46,7 +49,6 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		width: 320,
-		height: 36,
 		paddingRight: 10,
 		paddingLeft: 20,
 		borderRadius: 7.5,
