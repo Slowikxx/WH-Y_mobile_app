@@ -71,12 +71,18 @@ const faqQuestions = [
 ];
 
 const governmentLinks = [
-	{ name: 'Link do strony rodo', link: '#' },
-	{ name: 'Link do strony o fałszywych zeznaniach', link: '#' },
-	{ name: 'Link do strony o odpowiedzialności karnej nieletnich', link: '#' },
+	{ name: 'Link do strony rodo', link: 'https://uodo.gov.pl/pl/404/224' },
+	{
+		name: 'Link do strony o fałszywych zeznaniach',
+		link: 'https://lexlege.pl/kk/art-233/',
+	},
+	{
+		name: 'Link do strony o odpowiedzialności karnej nieletnich',
+		link: 'https://lexlege.pl/kk/art-10/',
+	},
 	{
 		name: 'Link do strony o obowiązku zawiadomienia o przestępstwie',
-		link: '#',
+		link: 'https://arslege.pl/nieudzielenie-pomocy/k1/a193/',
 	},
 ];
 

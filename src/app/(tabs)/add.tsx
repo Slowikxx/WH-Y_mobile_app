@@ -94,7 +94,7 @@ export default function TabOneScreen() {
 			}
 		>
 			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-				<ScrollView showsVerticalScrollIndicator={false}>
+				<View>
 					<Animated.View
 						entering={FadeInDown.duration(500)}
 						style={styles.background}
@@ -234,67 +234,72 @@ export default function TabOneScreen() {
 								/>
 							)}
 
-							<Location />
-							<Text
-								style={[
-									styles.mdText,
-									{
-										color: colorScheme === 'light' ? '#594E59' : '#978E97',
-									},
-								]}
+							<ScrollView
+								style={{ marginBottom: 100 }}
+								showsVerticalScrollIndicator={false}
 							>
-								lub
-							</Text>
-							<AddPlace />
-							<AddWitness />
-							<AddCulprit />
-							<Dropdown mainText="Wybierz typ przestępstwa" type="crime" />
-							<Dropdown mainText="Wybierz typ wykroczenia" type="offense" />
-							<Text
-								style={[
-									styles.mdText,
-									{
-										color: colorScheme === 'light' ? '#594E59' : '#978E97',
-									},
-								]}
-							>
-								lub
-							</Text>
-							<AddDescription />
-							<FilePicker />
-							<Input
-								max_words={500}
-								label="Hasło"
-								inputText={password}
-								setInputText={setPassword}
-								secureTextEntry={true}
-							/>
-							<Button
-								onPress={() => console.log('wysłano')}
-								width={324}
-								height={44}
-								text="Wyślij sprawę"
-								backgroundColor={
-									colorScheme === 'light' && password.length >= 8
-										? '#BF1616'
-										: colorScheme === 'dark' && password.length >= 8
-										? '#E74333'
-										: 'transparent'
-								}
-								borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
-								btnTextColor={
-									colorScheme === 'light' && password.length >= 8
-										? '#F0EEF0'
-										: colorScheme === 'light'
-										? '#BF1616'
-										: colorScheme === 'dark' && password.length >= 8
-										? '#171017'
-										: '#E74333'
-								}
-							/>
+								<Location />
+								<Text
+									style={[
+										styles.mdText,
+										{
+											color: colorScheme === 'light' ? '#594E59' : '#978E97',
+										},
+									]}
+								>
+									lub
+								</Text>
+								<AddPlace />
+								<AddWitness />
+								<AddCulprit />
+								<Dropdown mainText="Wybierz typ przestępstwa" type="crime" />
+								<Dropdown mainText="Wybierz typ wykroczenia" type="offense" />
+								<Text
+									style={[
+										styles.mdText,
+										{
+											color: colorScheme === 'light' ? '#594E59' : '#978E97',
+										},
+									]}
+								>
+									lub
+								</Text>
+								<AddDescription />
+								<FilePicker />
+								<Input
+									max_words={500}
+									label="Hasło"
+									inputText={password}
+									setInputText={setPassword}
+									secureTextEntry={true}
+								/>
+								<Button
+									onPress={() => console.log('wysłano')}
+									width={324}
+									height={44}
+									text="Wyślij sprawę"
+									backgroundColor={
+										colorScheme === 'light' && password.length >= 8
+											? '#BF1616'
+											: colorScheme === 'dark' && password.length >= 8
+											? '#E74333'
+											: 'transparent'
+									}
+									borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
+									btnTextColor={
+										colorScheme === 'light' && password.length >= 8
+											? '#F0EEF0'
+											: colorScheme === 'light'
+											? '#BF1616'
+											: colorScheme === 'dark' && password.length >= 8
+											? '#171017'
+											: '#E74333'
+									}
+								/>
+							</ScrollView>
 						</View>
 					</Animated.View>
-				</ScrollView>
+				</View>
 			</TouchableWithoutFeedback>
 		</ImageBackground>
 	);
@@ -324,7 +329,6 @@ const styles = StyleSheet.create({
 	container: {
 		gap: 13,
 		marginTop: 20,
-		marginBottom: 180,
 	},
 	mdText: {
 		fontFamily: 'Roboto',
