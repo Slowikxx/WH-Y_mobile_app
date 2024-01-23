@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { ImageBackground, View } from 'react-native';
 import { ThemeContext } from '../_layout';
-import { PickDate } from '../../components';
+import { PickTime } from '../../components';
 
 const LegalInfo = () => {
 	const { colorScheme } = useContext(ThemeContext);

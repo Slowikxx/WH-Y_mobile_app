@@ -18,6 +18,7 @@ import AccountHeader from './accountHeader';
 import AddDescription from './addDescription';
 import AddToForm from './addToForm';
 import PickDate from './pickDate';
+import PickTime from './pickTime';
 
 export {
 	AddCulprit,
@@ -40,4 +41,5 @@ export {
 	AddDescription,
 	AddToForm,
 	PickDate,
+	PickTime,
 };

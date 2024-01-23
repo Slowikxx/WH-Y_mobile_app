@@ -23,6 +23,7 @@ import {
 	FilePicker,
 	AddDescription,
 	PickDate,
+	PickTime,
 } from '../../components';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -30,9 +31,9 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 export default function TabOneScreen() {
 	const [password, setPassword] = useState('');
 	const [date, setDate] = useState('');
-	const [dateString, setDateString] = useState('');
-	const [time, setTime] = useState(new Date());
-	const [timeString, setTimeString] = useState('');
+	const [hour, setHour] = useState('');
+	const [minute, setMinute] = useState('');
+	const [time, setTime] = useState('');
 	const [showDatePicker, setShowDatePicker] = useState(false);
 	const [showTimePicker, setShowTimePicker] = useState(false);
 
@@ -42,41 +43,46 @@ export default function TabOneScreen() {
 		setShowDatePicker(!showDatePicker);
 	};
 
-	const toggleTimePicker = () => {
-		setShowTimePicker(!showTimePicker);
+	const handleTimePress = () => {
+		setTime(`${hour}:${minute}`);
+		setShowTimePicker(false);
 	};
 
-	const onChangeTime = ({ type }: any, selectedTime: any) => {
-		if (type === 'set' && selectedTime) {
-			const currentTime = selectedTime;
-			setTime(currentTime);
+	// const toggleTimePicker = () => {
+	// 	setShowTimePicker(!showTimePicker);
+	// };
 
-			if (Platform.OS === 'android') {
-				toggleTimePicker();
-				setTime(currentTime);
-				setTimeString(formatTime(currentTime));
-			}
-		} else {
-			toggleTimePicker();
-		}
-	};
+	// const onChangeTime = ({ type }: any, selectedTime: any) => {
+	// 	if (type === 'set' && selectedTime) {
+	// 		const currentTime = selectedTime;
+	// 		setTime(currentTime);
 
-	const confirmIOSTime = () => {
-		setTime(time);
-		setTimeString(formatTime(time));
-		toggleTimePicker();
-	};
+	// 		if (Platform.OS === 'android') {
+	// 			toggleTimePicker();
+	// 			setTime(currentTime);
+	// 			setTimeString(formatTime(currentTime));
+	// 		}
+	// 	} else {
+	// 		toggleTimePicker();
+	// 	}
+	// };
 
-	const formatTime = (rawTime: string): string => {
-		let formattedTime = new Date(rawTime);
-		let hours = formattedTime.getHours();
-		let minutes = formattedTime.getMinutes();
+	// const confirmIOSTime = () => {
+	// 	setTime(time);
+	// 	setTimeString(formatTime(time));
+	// 	toggleTimePicker();
+	// };
 
-		const formattedHours = hours < 10 ? `0${hours}` : hours;
-		const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+	// const formatTime = (rawTime: string): string => {
+	// 	let formattedTime = new Date(rawTime);
+	// 	let hours = formattedTime.getHours();
+	// 	let minutes = formattedTime.getMinutes();
 
-		return `${formattedHours}:${formattedMinutes}`;
-	};
+	// 	const formattedHours = hours < 10 ? `0${hours}` : hours;
+	// 	const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+	// 	return `${formattedHours}:${formattedMinutes}`;
+	// };
 
 	return (
 		<ImageBackground
@@ -154,22 +160,67 @@ export default function TabOneScreen() {
 											color={colorScheme === 'light' ? '#168DBF' : '#33B1E7'}
 										/>
 									</View>
-									<View style={{ alignSelf: 'flex-end' }}>
-										<Button
-											onPress={toggleTimePicker}
-											width={151}
-											height={44}
-											text={timeString !== '' ? timeString : 'hh:mm'}
-											backgroundColor={
-												colorScheme === 'light' ? '#BF1616' : '#E74333'
-											}
-											borderColor={
-												colorScheme === 'light' ? '#BF1616' : '#E74333'
-											}
-											btnTextColor={
-												colorScheme === 'light' ? '#F0EEF0' : '#171017'
-											}
-										/>
+									<View
+										style={{
+											alignSelf: 'flex-end',
+											justifyContent: 'center',
+											alignItems: 'center',
+											height: 44,
+											marginTop: 10,
+										}}
+									>
+										{showTimePicker ? (
+											// <View
+											// 	style={{
+											// 		width: 334,
+											// 		backgroundColor:
+											// 			colorScheme === 'light' ? '#F0EEF0' : '#171017',
+											// 		borderRadius: 7.5,
+											// 		padding: 10,
+											// 	}}
+											// >
+											// 	<DateTimePicker
+											// 		mode="time"
+											// 		display="spinner"
+											// 		value={time}
+											// 		onChange={onChangeTime}
+											// 		style={styles.picker}
+											// 		textColor={colorScheme === 'light' ? 'black' : 'white'}
+											// 		is24Hour={true}
+											// 	/>
+											// 	{Platform.OS === 'ios' && (
+											// 		<IOSButtons
+											// 			confirmIOS={confirmIOSTime}
+											// 			togglePicker={toggleTimePicker}
+											// 		/>
+											// 	)}
+											// </View>
+											<PickTime
+												onPress={handleTimePress}
+												hour={hour}
+												minute={minute}
+												time={time}
+												setHour={setHour}
+												setMinute={setMinute}
+												setTime={setTime}
+											/>
+										) : (
+											<Button
+												onPress={() => setShowTimePicker(true)}
+												width={151}
+												height={44}
+												text={time !== '' ? time : 'hh:mm'}
+												backgroundColor={
+													colorScheme === 'light' ? '#BF1616' : '#E74333'
+												}
+												borderColor={
+													colorScheme === 'light' ? '#BF1616' : '#E74333'
+												}
+												btnTextColor={
+													colorScheme === 'light' ? '#F0EEF0' : '#171017'
+												}
+											/>
+										)}
 									</View>
 								</View>
 							</View>
@@ -181,34 +232,6 @@ export default function TabOneScreen() {
 									selectedDate={date}
 									setSelectedDate={setDate}
 								/>
-							)}
-
-							{showTimePicker && (
-								<View
-									style={{
-										width: 334,
-										backgroundColor:
-											colorScheme === 'light' ? '#F0EEF0' : '#171017',
-										borderRadius: 7.5,
-										padding: 10,
-									}}
-								>
-									<DateTimePicker
-										mode="time"
-										display="spinner"
-										value={time}
-										onChange={onChangeTime}
-										style={styles.picker}
-										textColor={colorScheme === 'light' ? 'black' : 'white'}
-										is24Hour={true}
-									/>
-									{Platform.OS === 'ios' && (
-										<IOSButtons
-											confirmIOS={confirmIOSTime}
-											togglePicker={toggleTimePicker}
-										/>
-									)}
-								</View>
 							)}
 
 							<Location />
