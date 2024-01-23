@@ -17,6 +17,7 @@ import TopNav from './topNav';
 import AccountHeader from './accountHeader';
 import AddDescription from './addDescription';
 import AddToForm from './addToForm';
+import PickDate from './pickDate';
 
 export {
 	AddCulprit,
@@ -38,4 +39,5 @@ export {
 	AccountHeader,
 	AddDescription,
 	AddToForm,
+	PickDate,
 };

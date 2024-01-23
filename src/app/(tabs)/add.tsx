@@ -22,13 +22,14 @@ import {
 	Dropdown,
 	FilePicker,
 	AddDescription,
+	PickDate,
 } from '../../components';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 export default function TabOneScreen() {
 	const [password, setPassword] = useState('');
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState('');
 	const [dateString, setDateString] = useState('');
 	const [time, setTime] = useState(new Date());
 	const [timeString, setTimeString] = useState('');
@@ -60,31 +61,10 @@ export default function TabOneScreen() {
 		}
 	};
 
-	const onChangeDate = ({ type }: any, selectedDate: any) => {
-		if (type === 'set') {
-			const currentDate = selectedDate;
-			setDate(currentDate);
-
-			if (Platform.OS === 'android') {
-				toggleDatePicker();
-				setDate(currentDate);
-				setDateString(formatDate(currentDate.toDateString()));
-			}
-		} else {
-			toggleDatePicker();
-		}
-	};
-
 	const confirmIOSTime = () => {
 		setTime(time);
 		setTimeString(formatTime(time));
 		toggleTimePicker();
-	};
-
-	const confirmIOSDate = () => {
-		setDate(date);
-		setDateString(formatDate(date.toDateString()));
-		toggleDatePicker();
 	};
 
 	const formatTime = (rawTime: string): string => {
@@ -96,18 +76,6 @@ export default function TabOneScreen() {
 		const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
 		return `${formattedHours}:${formattedMinutes}`;
-	};
-
-	const formatDate = (rawDate: string): string => {
-		let formattedDate = new Date(rawDate);
-		let year = formattedDate.getFullYear();
-		let month = formattedDate.getMonth() + 1;
-		let day = formattedDate.getDate();
-
-		month = month < 10 ? `0${month}` : month;
-		day = day < 10 ? `0${day}` : day;
-
-		return `${day}-${month}-${year}`;
 	};
 
 	return (
@@ -155,7 +123,7 @@ export default function TabOneScreen() {
 										onPress={toggleDatePicker}
 										width={151}
 										height={44}
-										text={dateString !== '' ? dateString : 'dd-mm-rrrr'}
+										text={date !== '' ? date : 'dd-mm-rrrr'}
 										backgroundColor={
 											colorScheme === 'light' ? '#BF1616' : '#E74333'
 										}
@@ -205,31 +173,14 @@ export default function TabOneScreen() {
 									</View>
 								</View>
 							</View>
+
 							{showDatePicker && (
-								<View
-									style={{
-										width: 334,
-										backgroundColor:
-											colorScheme === 'light' ? '#F0EEF0' : '#171017',
-										borderRadius: 7.5,
-										padding: 10,
-									}}
-								>
-									<DateTimePicker
-										mode="date"
-										display="spinner"
-										value={date}
-										onChange={onChangeDate}
-										style={styles.picker}
-										textColor={colorScheme === 'light' ? 'black' : 'white'}
-									/>
-									{Platform.OS === 'ios' && (
-										<IOSButtons
-											confirmIOS={confirmIOSDate}
-											togglePicker={toggleDatePicker}
-										/>
-									)}
-								</View>
+								<PickDate
+									openDatePicker={showDatePicker}
+									setOpenDatePicker={setShowDatePicker}
+									selectedDate={date}
+									setSelectedDate={setDate}
+								/>
 							)}
 
 							{showTimePicker && (

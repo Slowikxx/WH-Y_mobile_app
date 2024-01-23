@@ -1,7 +1,8 @@
 import { ThemeContext } from '../app/_layout';
 import { useState, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Input } from './';
+import Button from './button';
+import Input from './input';
 
 const AddDescription = () => {
 	const [description, setDescription] = useState<any>('');
