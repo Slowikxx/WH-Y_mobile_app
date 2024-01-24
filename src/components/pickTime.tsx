@@ -47,6 +47,7 @@ const PickTime = ({
 
 	const handleScroll = (data: any, type: string) => {
 		const index = Math.round(data.nativeEvent.contentOffset.y / 40);
+
 		if (type === 'hour') {
 			handleHourSelect(index);
 		} else {

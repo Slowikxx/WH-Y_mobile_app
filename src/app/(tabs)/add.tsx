@@ -23,7 +23,6 @@ import {
 	FilePicker,
 	AddDescription,
 	PickDate,
-	PickTime,
 } from '../../components';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -31,9 +30,9 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 export default function TabOneScreen() {
 	const [password, setPassword] = useState('');
 	const [date, setDate] = useState('');
-	const [hour, setHour] = useState('');
-	const [minute, setMinute] = useState('');
-	const [time, setTime] = useState('');
+	const [dateString, setDateString] = useState('');
+	const [time, setTime] = useState(new Date());
+	const [timeString, setTimeString] = useState('');
 	const [showDatePicker, setShowDatePicker] = useState(false);
 	const [showTimePicker, setShowTimePicker] = useState(false);
 
@@ -43,46 +42,41 @@ export default function TabOneScreen() {
 		setShowDatePicker(!showDatePicker);
 	};
 
-	const handleTimePress = () => {
-		setTime(`${hour}:${minute}`);
-		setShowTimePicker(false);
+	const toggleTimePicker = () => {
+		setShowTimePicker(!showTimePicker);
 	};
 
-	// const toggleTimePicker = () => {
-	// 	setShowTimePicker(!showTimePicker);
-	// };
+	const onChangeTime = ({ type }: any, selectedTime: any) => {
+		if (type === 'set' && selectedTime) {
+			const currentTime = selectedTime;
+			setTime(currentTime);
 
-	// const onChangeTime = ({ type }: any, selectedTime: any) => {
-	// 	if (type === 'set' && selectedTime) {
-	// 		const currentTime = selectedTime;
-	// 		setTime(currentTime);
+			if (Platform.OS === 'android') {
+				toggleTimePicker();
+				setTime(currentTime);
+				setTimeString(formatTime(currentTime));
+			}
+		} else {
+			toggleTimePicker();
+		}
+	};
 
-	// 		if (Platform.OS === 'android') {
-	// 			toggleTimePicker();
-	// 			setTime(currentTime);
-	// 			setTimeString(formatTime(currentTime));
-	// 		}
-	// 	} else {
-	// 		toggleTimePicker();
-	// 	}
-	// };
+	const confirmIOSTime = () => {
+		setTime(time);
+		setTimeString(formatTime(time));
+		toggleTimePicker();
+	};
 
-	// const confirmIOSTime = () => {
-	// 	setTime(time);
-	// 	setTimeString(formatTime(time));
-	// 	toggleTimePicker();
-	// };
+	const formatTime = (rawTime: string): string => {
+		let formattedTime = new Date(rawTime);
+		let hours = formattedTime.getHours();
+		let minutes = formattedTime.getMinutes();
 
-	// const formatTime = (rawTime: string): string => {
-	// 	let formattedTime = new Date(rawTime);
-	// 	let hours = formattedTime.getHours();
-	// 	let minutes = formattedTime.getMinutes();
+		const formattedHours = hours < 10 ? `0${hours}` : hours;
+		const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
-	// 	const formattedHours = hours < 10 ? `0${hours}` : hours;
-	// 	const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-	// 	return `${formattedHours}:${formattedMinutes}`;
-	// };
+		return `${formattedHours}:${formattedMinutes}`;
+	};
 
 	return (
 		<ImageBackground
@@ -94,7 +88,7 @@ export default function TabOneScreen() {
 			}
 		>
 			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-				<View>
+				<ScrollView showsVerticalScrollIndicator={false}>
 					<Animated.View
 						entering={FadeInDown.duration(500)}
 						style={styles.background}
@@ -160,67 +154,22 @@ export default function TabOneScreen() {
 											color={colorScheme === 'light' ? '#168DBF' : '#33B1E7'}
 										/>
 									</View>
-									<View
-										style={{
-											alignSelf: 'flex-end',
-											justifyContent: 'center',
-											alignItems: 'center',
-											height: 44,
-											marginTop: 10,
-										}}
-									>
-										{showTimePicker ? (
-											// <View
-											// 	style={{
-											// 		width: 334,
-											// 		backgroundColor:
-											// 			colorScheme === 'light' ? '#F0EEF0' : '#171017',
-											// 		borderRadius: 7.5,
-											// 		padding: 10,
-											// 	}}
-											// >
-											// 	<DateTimePicker
-											// 		mode="time"
-											// 		display="spinner"
-											// 		value={time}
-											// 		onChange={onChangeTime}
-											// 		style={styles.picker}
-											// 		textColor={colorScheme === 'light' ? 'black' : 'white'}
-											// 		is24Hour={true}
-											// 	/>
-											// 	{Platform.OS === 'ios' && (
-											// 		<IOSButtons
-											// 			confirmIOS={confirmIOSTime}
-											// 			togglePicker={toggleTimePicker}
-											// 		/>
-											// 	)}
-											// </View>
-											<PickTime
-												onPress={handleTimePress}
-												hour={hour}
-												minute={minute}
-												time={time}
-												setHour={setHour}
-												setMinute={setMinute}
-												setTime={setTime}
-											/>
-										) : (
-											<Button
-												onPress={() => setShowTimePicker(true)}
-												width={151}
-												height={44}
-												text={time !== '' ? time : 'hh:mm'}
-												backgroundColor={
-													colorScheme === 'light' ? '#BF1616' : '#E74333'
-												}
-												borderColor={
-													colorScheme === 'light' ? '#BF1616' : '#E74333'
-												}
-												btnTextColor={
-													colorScheme === 'light' ? '#F0EEF0' : '#171017'
-												}
-											/>
-										)}
+									<View style={{ alignSelf: 'flex-end' }}>
+										<Button
+											onPress={toggleTimePicker}
+											width={151}
+											height={44}
+											text={timeString !== '' ? timeString : 'hh:mm'}
+											backgroundColor={
+												colorScheme === 'light' ? '#BF1616' : '#E74333'
+											}
+											borderColor={
+												colorScheme === 'light' ? '#BF1616' : '#E74333'
+											}
+											btnTextColor={
+												colorScheme === 'light' ? '#F0EEF0' : '#171017'
+											}
+										/>
 									</View>
 								</View>
 							</View>
@@ -234,72 +183,95 @@ export default function TabOneScreen() {
 								/>
 							)}
 
-							<ScrollView
-								style={{ marginBottom: 100 }}
-								showsVerticalScrollIndicator={false}
+							{showTimePicker && (
+								<View
+									style={{
+										width: 334,
+										backgroundColor:
+											colorScheme === 'light' ? '#F0EEF0' : '#171017',
+										borderRadius: 7.5,
+										padding: 10,
+									}}
+								>
+									<DateTimePicker
+										mode="time"
+										display="spinner"
+										value={time}
+										onChange={onChangeTime}
+										style={styles.picker}
+										textColor={colorScheme === 'light' ? 'black' : 'white'}
+										is24Hour={true}
+									/>
+									{Platform.OS === 'ios' && (
+										<IOSButtons
+											confirmIOS={confirmIOSTime}
+											togglePicker={toggleTimePicker}
+										/>
+									)}
+								</View>
+							)}
+
+							<Location />
+							<Text
+								style={[
+									styles.mdText,
+									{
+										color: colorScheme === 'light' ? '#594E59' : '#978E97',
+									},
+								]}
 							>
-								<Location />
-								<Text
-									style={[
-										styles.mdText,
-										{
-											color: colorScheme === 'light' ? '#594E59' : '#978E97',
-										},
-									]}
-								>
-									lub
-								</Text>
-								<AddPlace />
-								<AddWitness />
-								<AddCulprit />
-								<Dropdown mainText="Wybierz typ przestępstwa" type="crime" />
-								<Dropdown mainText="Wybierz typ wykroczenia" type="offense" />
-								<Text
-									style={[
-										styles.mdText,
-										{
-											color: colorScheme === 'light' ? '#594E59' : '#978E97',
-										},
-									]}
-								>
-									lub
-								</Text>
-								<AddDescription />
-								<FilePicker />
-								<Input
-									max_words={500}
-									label="Hasło"
-									inputText={password}
-									setInputText={setPassword}
-									secureTextEntry={true}
-								/>
-								<Button
-									onPress={() => console.log('wysłano')}
-									width={324}
-									height={44}
-									text="Wyślij sprawę"
-									backgroundColor={
-										colorScheme === 'light' && password.length >= 8
-											? '#BF1616'
-											: colorScheme === 'dark' && password.length >= 8
-											? '#E74333'
-											: 'transparent'
-									}
-									borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
-									btnTextColor={
-										colorScheme === 'light' && password.length >= 8
-											? '#F0EEF0'
-											: colorScheme === 'light'
-											? '#BF1616'
-											: colorScheme === 'dark' && password.length >= 8
-											? '#171017'
-											: '#E74333'
-									}
-								/>
-							</ScrollView>
+								lub
+							</Text>
+							<AddPlace />
+							<AddWitness />
+							<AddCulprit />
+							<Dropdown mainText="Wybierz typ przestępstwa" type="crime" />
+							<Dropdown mainText="Wybierz typ wykroczenia" type="offense" />
+							<Text
+								style={[
+									styles.mdText,
+									{
+										color: colorScheme === 'light' ? '#594E59' : '#978E97',
+									},
+								]}
+							>
+								lub
+							</Text>
+							<AddDescription />
+							<FilePicker />
+							<Input
+								max_words={500}
+								label="Hasło"
+								inputText={password}
+								setInputText={setPassword}
+								secureTextEntry={true}
+							/>
+							<Button
+								onPress={() => console.log('wysłano')}
+								width={324}
+								height={44}
+								text="Wyślij sprawę"
+								backgroundColor={
+									colorScheme === 'light' && password.length >= 8
+										? '#BF1616'
+										: colorScheme === 'dark' && password.length >= 8
+										? '#E74333'
+										: 'transparent'
+								}
+								borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
+								btnTextColor={
+									colorScheme === 'light' && password.length >= 8
+										? '#F0EEF0'
+										: colorScheme === 'light'
+										? '#BF1616'
+										: colorScheme === 'dark' && password.length >= 8
+										? '#171017'
+										: '#E74333'
+								}
+							/>
 						</View>
 					</Animated.View>
-				</View>
+				</ScrollView>
 			</TouchableWithoutFeedback>
 		</ImageBackground>
 	);
@@ -329,6 +301,7 @@ const styles = StyleSheet.create({
 	container: {
 		gap: 13,
 		marginTop: 20,
+		marginBottom: 180,
 	},
 	mdText: {
 		fontFamily: 'Roboto',
