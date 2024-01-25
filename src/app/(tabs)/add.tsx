@@ -30,11 +30,17 @@ import { useAuth } from '../../providers/AuthProvider';
 import { Redirect } from 'expo-router';
 
 export default function TabOneScreen() {
-	const { session, users } = useAuth();
-	const [password, setPassword] = useState('');
+	const { session, profile } = useAuth(); //??
+
+	// const [password, setPassword] = useState('');
 	const [date, setDate] = useState('');
-	const [dateString, setDateString] = useState('');
 	const [time, setTime] = useState(new Date());
+	const [localization, setLocalization] = useState(session && profile ? profile.city : '')
+	const [desc, setDesc] = useState<string[]>([])
+	const [crime, setCrime] = useState<string[]>([])
+	const [offence, setOffence] = useState<string[]>([])
+	const [applicant, setApplicant] = useState<string[]>([])
+
 	const [timeString, setTimeString] = useState('');
 	const [showDatePicker, setShowDatePicker] = useState(false);
 	const [showTimePicker, setShowTimePicker] = useState(false);
@@ -246,32 +252,32 @@ export default function TabOneScreen() {
 							</Text>
 							<AddDescription />
 							<FilePicker />
-							<Input
+							{/* <Input
 								max_words={500}
 								label="Hasło"
 								inputText={password}
 								setInputText={setPassword}
 								secureTextEntry={true}
-							/>
+							/> */}
 							<Button
 								onPress={() => console.log('wysłano')}
 								width={324}
 								height={44}
 								text="Wyślij sprawę"
 								backgroundColor={
-									colorScheme === 'light' && password.length >= 8
+									colorScheme === 'light' /* && password.length >= 8 */
 										? '#BF1616'
-										: colorScheme === 'dark' && password.length >= 8
+										: colorScheme === 'dark' /* && password.length >= 8 */
 										? '#E74333'
 										: 'transparent'
 								}
 								borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 								btnTextColor={
-									colorScheme === 'light' && password.length >= 8
+									colorScheme === 'light' /* && password.length >= 8 */
 										? '#F0EEF0'
 										: colorScheme === 'light'
 										? '#BF1616'
-										: colorScheme === 'dark' && password.length >= 8
+										: colorScheme === 'dark' /* && password.length >= 8 */
 										? '#171017'
 										: '#E74333'
 								}
