@@ -7,52 +7,61 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { Alert} from 'react-native'
 
 type AuthData = {
   session: Session | null;
   profile: any;
   loading: boolean;
-//   isAdmin: boolean;
 };
 
 const AuthContext = createContext<AuthData>({
   session: null,
   loading: true,
-  profile: null,
-//   isAdmin: false,
+  profile: null
 });
 
 export default function AuthProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<{id: string, first_name: string, last_name: string, pesel: string, date_of_birth: Date, city: string, street: string, post_code: string, phone_number: string, email: string} | null>(null); //itd
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+		setSession(session)
+	  })
 
-      setSession(session);
-
-      if (session) {
-        // fetch profile
-        const { data } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-        setProfile(data || null);
-      }
-
-      setLoading(false);
-    };
-
-    fetchSession();
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
   }, []);
+
+  useEffect(() => {
+	if(session) getProfile()
+  }, [session])
+  
+  async function getProfile() {
+    try {
+      setLoading(true)
+      if (!session?.user) throw new Error('No user on the session!')
+
+      const { data, error, status } = await supabase
+        .from('profiles')
+		.select('*')
+        .eq('id', session?.user.id)
+        .single()
+      if (error && status !== 406) {
+        throw error
+      }
+	  setProfile(data || null);
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <AuthContext.Provider

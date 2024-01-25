@@ -22,7 +22,7 @@ export default function TabTwoScreen() {
 		navigation.setOptions({
 			headerTitle: showLogin ? 'LOGOWANIE' : 'REJESTRACJA',
 		});
-	}, []);
+	}, [showLogin]);
 
 	if (session) {
 		return <Redirect href="/myAcc" />;

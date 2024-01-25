@@ -54,7 +54,7 @@ const SingleData = ({ label, text }: any) => {
 };
 
 const ShowData = () => {
-	const { session, users } = useAuth();
+	const { session, profile } = useAuth();
 	const { colorScheme } = useContext(ThemeContext);
 
 	return (
@@ -85,13 +85,16 @@ const ShowData = () => {
 						<Animated.View entering={FadeInDown.duration(300)}>
 							<SingleData
 								label="Imię / Imiona"
-								text={session && users[0]['first_name']}
+								text={session && profile ? profile.first_name : ""}
 							/>
 							<SingleData
 								label="Nazwisko"
-								text={session && users[0]['last_name']}
+								text={session && profile ? profile.last_name : ""}
 							/>
-							<SingleData label="PESEL" text={session && users[0]['pesel']} />
+							<SingleData 
+								label="PESEL" 
+								text={session && profile ? profile.pesel : ""}
+							/>
 							<View>
 								<View style={styles.labelContainer}>
 									<Text style={styles.label}>Data urodzenia</Text>
@@ -99,7 +102,7 @@ const ShowData = () => {
 								<Button
 									width={151}
 									height={44}
-									text={session && users[0]['date_of_birth']}
+									text={session && profile ? profile.date_of_birth : ""}
 									backgroundColor="#BF1616"
 									borderColor="#BF1616"
 									btnTextColor="#F0EEF0"
@@ -107,23 +110,23 @@ const ShowData = () => {
 							</View>
 							<SingleData
 								label="Miasto zamieszkania"
-								text={session && users[0]['city']}
+								text={session && profile ? profile.city : ""}
 							/>
 							<SingleData
 								label="Ulica zamieszkania"
-								text={session && users[0]['street']}
+								text={session && profile ? profile.street : ""}
 							/>
 							<SingleData
 								label="Kod pocztowy zamieszkania"
-								text={session && users[0]['post_code']}
+								text={session && profile ? profile.post_code : ""}
 							/>
 							<SingleData
 								label="Numer telefonu"
-								text={session && users[0]['phone_number']}
+								text={session && profile ? profile.phone_number : ""}
 							/>
 							<SingleData
 								label="Adres email"
-								text={session && session['user']['email']}
+								text={session && profile ? profile.email : ""}
 							/>
 						</Animated.View>
 					</View>

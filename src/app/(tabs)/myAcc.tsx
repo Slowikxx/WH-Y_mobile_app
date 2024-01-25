@@ -9,13 +9,13 @@ import { useAuth } from '../../providers/AuthProvider';
 const MyAccount = () => {
 	const navigation = useNavigation();
 	const { colorScheme } = useContext(ThemeContext);
-	const { session, users } = useAuth();
+	const { session } = useAuth();
 
 	useEffect(() => {
 		if (!session) {
 			navigation.navigate('index');
 		}
-	}, []);
+	}, [session]);
 
 	if (!session) {
 		return <Redirect href="/" />;
