@@ -23,7 +23,7 @@ const AuthContext = createContext<AuthData>({
 
 export default function AuthProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
-  const [profile, setProfile] = useState<{id: string, first_name: string, last_name: string, pesel: string, date_of_birth: Date, city: string, street: string, post_code: string, phone_number: string, email: string} | null>(null); //itd
+  const [profile, setProfile] = useState<{id: string, first_name: string, last_name: string, pesel: string, date_of_birth: Date, city: string, street: string, post_code: string, phone_number: string} | null>(null); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

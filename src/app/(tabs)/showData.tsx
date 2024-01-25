@@ -126,7 +126,7 @@ const ShowData = () => {
 							/>
 							<SingleData
 								label="Adres email"
-								text={session && profile ? profile.email : ""}
+								text={session ? session.user.email : ""}
 							/>
 						</Animated.View>
 					</View>
