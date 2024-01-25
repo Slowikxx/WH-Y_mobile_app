@@ -28,8 +28,8 @@ const gregorianConfigs = {
 		'Listopad',
 		'Grudzień',
 	],
-	selectedFormat: 'DD-MM-YYYY',
-	dateFormat: 'DD-MM-YYYY',
+	selectedFormat: 'YYYY-MM-DD',
+	dateFormat: 'YYYY-MM-DD',
 	monthYearFormat: 'YYYY MM',
 	timeFormat: 'HH:mm',
 	hour: 'Hour',
@@ -74,7 +74,7 @@ class utils {
 	getFormated = (date, formatName = 'selectedFormat') =>
 		date.format(this.config[formatName]);
 
-	getFormatedDate = (date = new Date(), format = 'DD-MM-YYYY') =>
+	getFormatedDate = (date = new Date(), format = 'YYYY-MM-DD') =>
 		moment(date).format(format);
 
 	getTime = (time) => this.getDate(time).format(this.config.timeFormat);

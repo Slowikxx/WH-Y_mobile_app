@@ -9,6 +9,7 @@ import {
 	Platform,
 	ScrollView,
 	ImageBackground,
+	Alert
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import {
@@ -28,6 +29,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAuth } from '../../providers/AuthProvider';
 import { Redirect } from 'expo-router';
+import { supabase } from '../../lib/supabase';
 
 export default function TabOneScreen() {
 	const { session, profile } = useAuth(); //??
@@ -104,6 +106,90 @@ export default function TabOneScreen() {
 
 	if (!session) {
 		return <Redirect href="/" />;
+	}
+
+	
+	const [loading, setLoading] = useState(false);
+	async function insertData({
+		date,
+		time,
+		location,
+		desc,
+		crime,
+		offence,
+		l_city,
+		l_street,
+		l_post_code,
+		l_desc,
+		s_first_name,
+		s_last_name,
+		s_phone_number,
+		w_first_name,
+		w_last_name,
+		w_phone_number
+	} : {
+		date: string,
+		time: string,
+		location: string,
+		desc: string,
+		crime: string,
+		offence: string,
+		l_city: string,
+		l_street: string,
+		l_post_code: string,
+		l_desc: string,
+		s_first_name: string,
+		s_last_name: string,
+		s_phone_number: string,
+		w_first_name: string,
+		w_last_name: string,
+		w_phone_number: string
+	}) {
+		try {
+			setLoading(true);
+			if (!session?.user) throw new Error('No user on the session!');
+
+			if(!date || date == '' || !time || time=='' || desc == '')
+			{
+				throw new Error("Proszę uzupełnić czas i krótki opis zdarzenia")
+			}
+
+			const updates = {
+				applicant: session?.user.id,
+				date: date,
+				time: time,
+				location: location,
+				desc: desc,
+				crime: crime,
+				offence: offence,
+				l_city: l_city,
+				l_street: l_street,
+				l_post_code: l_post_code,
+				l_desc: l_desc,
+				s_first_name: s_first_name,
+				s_last_name: s_last_name,
+				s_phone_number: s_phone_number,
+				w_first_name: w_first_name,
+				w_last_name: w_last_name,
+				w_phone_number: w_phone_number
+			};
+			//(auth.uid() = applicant)
+			const { data, error } = await supabase.from('simpleCases').insert(updates).select();
+			if(!data)
+			{
+				throw new Error("Nie udało się zaktualizować danych")
+			}
+			else if (error) {
+				throw error;
+			}
+			Alert.alert('Pomyślnie zaktualizowano dane');
+		} catch (error) {
+			if (error instanceof Error) {
+				Alert.alert(error.message);
+			}
+		} finally {
+			setLoading(false);
+		}
 	}
 
 	return (
@@ -301,7 +387,24 @@ export default function TabOneScreen() {
 								secureTextEntry={true}
 							/> */}
 							<Button
-								onPress={() => console.log('wysłano')}
+								onPress={() => insertData({
+									date,
+									time: timeString,
+									location,
+									desc: description,
+									crime: 'Przestępstwo',
+									offence: 'Wykroczenie',
+									l_city: city,
+									l_street: street,
+									l_post_code: post_code,
+									l_desc: desc,
+									s_first_name: culpritName,
+									s_last_name: culpritSurname,
+									s_phone_number: culpritPhone,
+									w_first_name: witnessName,
+									w_last_name: witnessSurname,
+									w_phone_number: witnessPhone
+								} )}
 								width={324}
 								height={44}
 								text="Wyślij sprawę"

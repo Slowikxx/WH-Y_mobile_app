@@ -61,12 +61,12 @@ const ModifyData = () => {
 			if (emailError) {
 				throw emailError;
 			}
+			Alert.alert('Pomyślnie zaktualizowano dane');
 		} catch (error) {
 			if (error instanceof Error) {
 				Alert.alert(error.message);
 			}
 		} finally {
-			Alert.alert('Pomyślnie zaktualizowano dane');
 			setLoading(false);
 		}
 	}
