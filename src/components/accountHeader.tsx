@@ -5,7 +5,7 @@ import { ThemeContext } from '../app/_layout';
 import { useAuth } from '../providers/AuthProvider';
 
 const AccountHeader = () => {
-	const { session, users } = useAuth();
+	const { session, profile } = useAuth();
 	const { colorScheme } = useContext(ThemeContext);
 
 	return (
@@ -16,10 +16,7 @@ const AccountHeader = () => {
 					{ color: colorScheme === 'light' ? '#BF1616' : '#E74333' },
 				]}
 			>
-				{/* {session && users
-					? `${users[0]['first_name']} ${users[0]['last_name']}`
-					: ''} */}
-				Siema
+			{session && profile ? profile.first_name + " " + profile.last_name : "Uzupełnij swoje dane!"}
 			</Text>
 			<View
 				style={[
