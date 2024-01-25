@@ -53,7 +53,7 @@ const MyAccount = () => {
 						borderColor={colorScheme === 'light' ? '#168DBF' : '#33B1E7'}
 						btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
 					/>
-					<Button
+					{/* <Button
 						onPress={() => navigation.navigate('changePassword')}
 						width={324}
 						height={44}
@@ -61,7 +61,7 @@ const MyAccount = () => {
 						backgroundColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 						borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 						btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
-					/>
+					/> */}
 					<Button
 						onPress={() => navigation.navigate('cases')}
 						width={324}
@@ -71,14 +71,14 @@ const MyAccount = () => {
 						borderColor={colorScheme === 'light' ? '#168DBF' : '#33B1E7'}
 						btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
 					/>
-					<Button
+					{/* <Button
 						width={324}
 						height={44}
 						text="Usuń konto"
 						backgroundColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 						borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 						btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
-					/>
+					/> */}
 				</View>
 			</Animated.View>
 		</ImageBackground>

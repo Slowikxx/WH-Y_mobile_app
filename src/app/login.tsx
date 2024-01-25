@@ -72,7 +72,7 @@ const Login = ({
 					btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
 					active={activePass}
 				/>
-				<Button
+				{/* <Button
 					width={195}
 					height={34}
 					text="Przypomnij moje hasło"
@@ -83,7 +83,7 @@ const Login = ({
 					borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 					btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
 					active={true}
-				/>
+				/> */}
 			</View>
 			<Text
 				style={[

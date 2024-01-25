@@ -16,40 +16,50 @@ import { useAuth } from '../../providers/AuthProvider';
 import { supabase } from '../../lib/supabase';
 
 const ModifyData = () => {
-	const [city, setCity] = useState('');
-	const [street, setStreet] = useState('');
-	const [postalCode, setPostalCode] = useState('');
-	const [phoneNumber, setPhoneNumber] = useState('');
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-
+	const { session, profile } = useAuth();
+	const [city, setCity] = useState(session && profile ? profile.city : '');
+	const [street, setStreet] = useState(session && profile ? profile.street : '');
+	const [post_code, setPostalCode] = useState(session && profile ? profile.post_code : '');
+	const [phone_number, setPhoneNumber] = useState(session && profile ? profile.phone_number : '');
+	const [email, setEmail] = useState(session ? session.user.email : '');
+	// const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
-
-	const navigation = useNavigation();
 	const { colorScheme } = useContext(ThemeContext);
 
-	const { session } = useAuth();
-
-	async function modifyData() {
+	async function modifyData({
+		city,
+		street,
+		post_code,
+		phone_number,
+		email
+	} : {
+		city: string,
+		street: string,
+		post_code: string,
+		phone_number: string,
+		email: string
+	}) {
 		try {
 			setLoading(true);
 			if (!session?.user) throw new Error('No user on the session!');
 
+			console.log(city + "\n" + street + "\n" + post_code + "\n" + phone_number + "\n" + email + "\n" )
+
 			const updates = {
 				id: session?.user.id,
+				city,
+				street,
+				post_code,
+				phone_number,
 				updated_at: new Date(),
 			};
-
-			if (city) updates.city = city;
-			if (street) updates.street = street;
-			if (postalCode) updates.post_code = postalCode;
-			if (phoneNumber) updates.phone_number = phoneNumber;
-			if (email) updates.email = email;
-
 			const { error } = await supabase.from('profiles').upsert(updates);
-
 			if (error) {
 				throw error;
+			}
+			const { error: emailError } = await supabase.auth.updateUser({email: email})
+			if (emailError) {
+				throw emailError;
 			}
 		} catch (error) {
 			if (error instanceof Error) {
@@ -60,6 +70,7 @@ const ModifyData = () => {
 			setLoading(false);
 		}
 	}
+
 	return (
 		<ImageBackground
 			style={{ paddingTop: 20, flex: 1 }}
@@ -102,14 +113,14 @@ const ModifyData = () => {
 								<Input
 									max_words={500}
 									label="Kod pocztowy zamieszkania"
-									inputText={postalCode}
+									inputText={post_code}
 									setInputText={setPostalCode}
 									secureTextEntry={false}
 								/>
 								<Input
 									max_words={500}
 									label="Numer telefonu"
-									inputText={phoneNumber}
+									inputText={phone_number}
 									setInputText={setPhoneNumber}
 									secureTextEntry={false}
 								/>
@@ -120,15 +131,15 @@ const ModifyData = () => {
 									setInputText={setEmail}
 									secureTextEntry={false}
 								/>
-								<Input
+								{/* <Input
 									max_words={500}
 									label="Podaj hasło"
 									inputText={password}
 									setInputText={setPassword}
 									secureTextEntry={true}
-								/>
+								/> */}
 								<Button
-									onPress={modifyData}
+									onPress={() => modifyData({ city, street, post_code, phone_number, email })}
 									width={324}
 									height={44}
 									text="Zapisz zmiany"
