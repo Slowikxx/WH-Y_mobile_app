@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from 'react';
 import { Redirect, useNavigation } from 'expo-router';
 import {
 	StyleSheet,
-	Text,
 	View,
 	TouchableWithoutFeedback,
 	Keyboard,
@@ -14,14 +13,10 @@ import Register from '../register';
 import { useAuth } from '../../providers/AuthProvider';
 
 export default function TabTwoScreen() {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [loading, setLoading] = useState(false);
 	const [showLogin, setShowLogin] = useState(true);
 	const navigation = useNavigation();
 	const { colorScheme } = useContext(ThemeContext);
-	const { session, users } = useAuth();
-	const isLoggedIn = session ? true : false;
+	const { session } = useAuth();
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -44,15 +39,9 @@ export default function TabTwoScreen() {
 		>
 			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 				<View style={styles.background}>
-					{!isLoggedIn ? (
+					{!session ? (
 						showLogin ? (
 							<Login
-								email={email}
-								setEmail={setEmail}
-								password={password}
-								setPassword={setPassword}
-								loading={loading}
-								setLoading={setLoading}
 								showLogin={showLogin}
 								setShowLogin={setShowLogin}
 							/>

@@ -6,35 +6,26 @@ import { ThemeContext } from './_layout';
 import { supabase } from '../lib/supabase';
 
 type LoginData = {
-	email: string;
-	setEmail: (email: string) => void;
-	password: string;
-	setPassword: (password: string) => void;
-	loading: boolean;
-	setLoading: (loading: boolean) => void;
 	showLogin: boolean;
 	setShowLogin: (showLogin: boolean) => void;
 };
 
 const Login = ({
-	email,
-	setEmail,
-	password,
-	setPassword,
-	loading,
-	setLoading,
 	showLogin,
-	setShowLogin,
+	setShowLogin
 }: LoginData) => {
-	const [active, setActive] = useState(false);
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
+	const [activePass, setActivePass] = useState(false);
 	const navigation = useNavigation();
 	const { colorScheme } = useContext(ThemeContext);
 
 	useEffect(() => {
 		if (password.length >= 8) {
-			setActive(true);
+			setActivePass(true);
 		} else {
-			setActive(false);
+			setActivePass(false);
 		}
 	}, [password.length]);
 
@@ -42,7 +33,7 @@ const Login = ({
 		setLoading(true);
 		const { error } = await supabase.auth.signInWithPassword({
 			email,
-			password,
+			password
 		});
 
 		if (error) Alert.alert(error.message);
@@ -72,14 +63,14 @@ const Login = ({
 					disabled={loading}
 					width={70}
 					height={34}
-					text="Dalej"
+					text={ loading ? "Logowanie" : "Zaloguj"}
 					backgroundColor={colorScheme === 'light' ? '#B8B2B8' : '#453845'}
 					activeBackgroundColor={
 						colorScheme === 'light' ? '#BF1616' : '#E74333'
 					}
 					borderColor={colorScheme === 'light' ? '#B8B2B8' : '#453845'}
 					btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
-					active={active}
+					active={activePass}
 				/>
 				<Button
 					width={195}
