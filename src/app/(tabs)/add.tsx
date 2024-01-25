@@ -173,7 +173,6 @@ export default function TabOneScreen() {
 				w_last_name: w_last_name,
 				w_phone_number: w_phone_number
 			};
-			//(auth.uid() = applicant)
 			const { data, error } = await supabase.from('simpleCases').insert(updates).select();
 			if(!data)
 			{
