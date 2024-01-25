@@ -6,7 +6,6 @@ import {
 	Animated,
 	TouchableOpacity,
 	Easing,
-	Image,
 	TextInput,
 	I18nManager,
 } from 'react-native';

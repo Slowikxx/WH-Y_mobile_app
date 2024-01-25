@@ -4,7 +4,6 @@ import {
 	View,
 	TouchableOpacity,
 	Text,
-	Image,
 	StyleSheet,
 	Animated,
 	I18nManager,

@@ -1,10 +1,13 @@
-import { useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { ThemeContext } from '../app/_layout';
+import { useAuth } from '../providers/AuthProvider';
 
 const AccountHeader = () => {
+	const { session, users } = useAuth();
 	const { colorScheme } = useContext(ThemeContext);
+
 	return (
 		<View style={styles.container}>
 			<Text
@@ -13,7 +16,10 @@ const AccountHeader = () => {
 					{ color: colorScheme === 'light' ? '#BF1616' : '#E74333' },
 				]}
 			>
-				Imię / Imiona i nazwisko użytkownika
+				{/* {session && users
+					? `${users[0]['first_name']} ${users[0]['last_name']}`
+					: ''} */}
+				Siema
 			</Text>
 			<View
 				style={[
@@ -44,7 +50,7 @@ const styles = StyleSheet.create({
 	},
 	lgText: {
 		fontFamily: 'Roboto',
-		fontSize: 20,
+		fontSize: 28,
 		fontWeight: '800',
 		fontStyle: 'normal',
 		lineHeight: 26,

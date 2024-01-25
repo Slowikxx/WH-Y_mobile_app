@@ -26,8 +26,11 @@ import {
 } from '../../components';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { useAuth } from '../../providers/AuthProvider';
+import { Redirect } from 'expo-router';
 
 export default function TabOneScreen() {
+	const { session, users } = useAuth();
 	const [password, setPassword] = useState('');
 	const [date, setDate] = useState('');
 	const [dateString, setDateString] = useState('');
@@ -77,6 +80,10 @@ export default function TabOneScreen() {
 
 		return `${formattedHours}:${formattedMinutes}`;
 	};
+
+	if (!session) {
+		return <Redirect href="/" />;
+	}
 
 	return (
 		<ImageBackground

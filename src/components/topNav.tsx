@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
+import { supabase } from '../lib/supabase';
 import { useNavigation } from '@react-navigation/native';
 import {
 	StyleSheet,
@@ -12,6 +13,7 @@ import {
 import { Feather } from '@expo/vector-icons';
 import Animated, { FadeInUp, FadeInDown } from 'react-native-reanimated';
 import { ThemeContext } from '../app/_layout';
+import { Redirect } from 'expo-router';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -83,7 +85,7 @@ const TopNav = () => {
 				enterDelay={0}
 			/>
 			<NavButton
-				onPress={() => navigation.navigate('legalInfo')}
+				onPress={() => navigation.navigate('legalInfo' as never)}
 				iconName="book"
 				color={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 				text="Informacje prawne"
@@ -91,7 +93,7 @@ const TopNav = () => {
 				enterDelay={50}
 			/>
 			<NavButton
-				onPress={() => navigation.navigate('administration')}
+				onPress={() => navigation.navigate('administration' as never)}
 				iconName="database"
 				color={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 				text="Administracja"
@@ -99,7 +101,7 @@ const TopNav = () => {
 				enterDelay={100}
 			/>
 			<NavButton
-				onPress={() => navigation.navigate('faq')}
+				onPress={() => navigation.navigate('faq' as never)}
 				iconName="users"
 				color={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 				text="O nas"
@@ -107,6 +109,7 @@ const TopNav = () => {
 				enterDelay={150}
 			/>
 			<NavButton
+				onPress={async () => await supabase.auth.signOut()}
 				iconName="log-out"
 				color={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 				text="Wyloguj"

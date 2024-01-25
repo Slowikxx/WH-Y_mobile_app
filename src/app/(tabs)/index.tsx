@@ -1,11 +1,37 @@
-import { useContext } from 'react';
-import { StyleSheet, ImageBackground, ScrollView } from 'react-native';
 import { ThemeContext } from '../_layout';
-import { Status, SearchBar } from '../../components';
-import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
+import { useState, useEffect, useContext } from 'react';
+import { Redirect, useNavigation } from 'expo-router';
+import {
+	StyleSheet,
+	Text,
+	View,
+	TouchableWithoutFeedback,
+	Keyboard,
+	ImageBackground,
+} from 'react-native';
+import Login from '../login';
+import Register from '../register';
+import { useAuth } from '../../providers/AuthProvider';
 
-export default function Cases() {
+export default function TabTwoScreen() {
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
+	const [showLogin, setShowLogin] = useState(true);
+	const navigation = useNavigation();
 	const { colorScheme } = useContext(ThemeContext);
+	const { session, users } = useAuth();
+	const isLoggedIn = session ? true : false;
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerTitle: showLogin ? 'LOGOWANIE' : 'REJESTRACJA',
+		});
+	}, []);
+
+	if (session) {
+		return <Redirect href="/myAcc" />;
+	}
 
 	return (
 		<ImageBackground
@@ -14,56 +40,41 @@ export default function Cases() {
 					? require('../../../assets/images/whylight.png')
 					: require('../../../assets/images/whydark.png')
 			}
-			style={{ flex: 1 }}
+			style={styles.bg}
 		>
-			<ScrollView
-				showsVerticalScrollIndicator={false}
-				style={styles.background}
-			>
-				<Animated.View
-					entering={FadeInDown.duration(300)}
-					style={styles.container}
-				>
-					<SearchBar />
-					<Status
-						iconName="more-horizontal"
-						bgColor="#16AAEA"
-						textColor="#16AAEA"
-						statusText="w toku"
-					/>
-					<Status
-						iconName="alert-triangle"
-						bgColor="#DC1F0D"
-						textColor="#DC1F0D"
-						statusText="umorzona"
-					/>
-					<Status
-						iconName="x"
-						bgColor="#F0B812"
-						textColor="#F0B812"
-						statusText="nieprzyjęta"
-					/>
-					<Status
-						iconName="check"
-						bgColor="#00CC1D"
-						textColor="#00CC1D"
-						statusText="zrealizowany"
-					/>
-				</Animated.View>
-			</ScrollView>
+			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+				<View style={styles.background}>
+					{!isLoggedIn ? (
+						showLogin ? (
+							<Login
+								email={email}
+								setEmail={setEmail}
+								password={password}
+								setPassword={setPassword}
+								loading={loading}
+								setLoading={setLoading}
+								showLogin={showLogin}
+								setShowLogin={setShowLogin}
+							/>
+						) : (
+							<Register showLogin={showLogin} setShowLogin={setShowLogin} />
+						)
+					) : (
+						<Redirect href="/myAcc" />
+					)}
+				</View>
+			</TouchableWithoutFeedback>
 		</ImageBackground>
 	);
 }
 
 const styles = StyleSheet.create({
-	background: {
+	bg: {
 		paddingTop: 20,
 		flex: 1,
 	},
-	container: {
+	background: {
+		height: '100%',
 		alignItems: 'center',
-		marginTop: 20,
-		gap: 13,
-		marginBottom: 100,
 	},
 });

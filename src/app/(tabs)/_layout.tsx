@@ -102,7 +102,7 @@ export default function TabLayout() {
 				}}
 			>
 				<Tabs.Screen
-					name="index"
+					name="cases"
 					options={{
 						title: '',
 						tabBarIcon: ({ focused }) => (
@@ -149,9 +149,9 @@ export default function TabLayout() {
 					}}
 				/>
 				<Tabs.Screen
-					name="account"
+					name="index"
 					options={{
-						title: 'REJESTRACJA',
+						title: 'LOGOWANIE',
 						tabBarIcon: ({ focused }) => (
 							<Feather
 								name="user"

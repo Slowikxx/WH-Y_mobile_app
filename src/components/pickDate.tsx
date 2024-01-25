@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, Text, Modal, TouchableOpacity } from 'react-native';
 import { ThemeContext } from '../app/_layout';
 import Button from './button';
-import { DatePicker } from '../datepicker/elements/DatePicker';
+import DatePicker from '../datepicker';
 
 const PickDate = ({
 	openDatePicker,

@@ -1,8 +1,7 @@
 import React, { useEffect, useContext } from 'react';
-import { View, StyleSheet, Text, Animated, Pressable } from 'react-native';
+import { View, StyleSheet, Text, Animated } from 'react-native';
 
-import { Header } from './Header';
-import { Days } from './Days';
+import { Header, Days } from '.';
 import { useCalendar } from '../DatePicker';
 import { ThemeContext } from '../../../app/_layout';
 

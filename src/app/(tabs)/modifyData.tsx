@@ -6,17 +6,60 @@ import {
 	TouchableWithoutFeedback,
 	Keyboard,
 	ScrollView,
+	Alert,
 } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { ThemeContext } from '../_layout';
 import { Button, Input, AccountHeader } from '../../components';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { useAuth } from '../../providers/AuthProvider';
+import { supabase } from '../../lib/supabase';
 
 const ModifyData = () => {
+	const [city, setCity] = useState('');
+	const [street, setStreet] = useState('');
+	const [postalCode, setPostalCode] = useState('');
+	const [phoneNumber, setPhoneNumber] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+
+	const [loading, setLoading] = useState(false);
+
 	const navigation = useNavigation();
 	const { colorScheme } = useContext(ThemeContext);
-	const [name, setName] = useState('Jan');
-	const [password, setPassword] = useState('Siema');
+
+	const { session } = useAuth();
+
+	async function modifyData() {
+		try {
+			setLoading(true);
+			if (!session?.user) throw new Error('No user on the session!');
+
+			const updates = {
+				id: session?.user.id,
+				updated_at: new Date(),
+			};
+
+			if (city) updates.city = city;
+			if (street) updates.street = street;
+			if (postalCode) updates.post_code = postalCode;
+			if (phoneNumber) updates.phone_number = phoneNumber;
+			if (email) updates.email = email;
+
+			const { error } = await supabase.from('profiles').upsert(updates);
+
+			if (error) {
+				throw error;
+			}
+		} catch (error) {
+			if (error instanceof Error) {
+				Alert.alert(error.message);
+			}
+		} finally {
+			Alert.alert('Pomyślnie zaktualizowano dane');
+			setLoading(false);
+		}
+	}
 	return (
 		<ImageBackground
 			style={{ paddingTop: 20, flex: 1 }}
@@ -45,36 +88,36 @@ const ModifyData = () => {
 								<Input
 									max_words={500}
 									label="Miasto zamieszkania"
-									inputText={name}
-									setInputText={setName}
+									inputText={city}
+									setInputText={setCity}
 									secureTextEntry={false}
 								/>
 								<Input
 									max_words={500}
 									label="Ulica zamieszkania"
-									inputText={name}
-									setInputText={setName}
+									inputText={street}
+									setInputText={setStreet}
 									secureTextEntry={false}
 								/>
 								<Input
 									max_words={500}
 									label="Kod pocztowy zamieszkania"
-									inputText={name}
-									setInputText={setName}
+									inputText={postalCode}
+									setInputText={setPostalCode}
 									secureTextEntry={false}
 								/>
 								<Input
 									max_words={500}
 									label="Numer telefonu"
-									inputText={name}
-									setInputText={setName}
+									inputText={phoneNumber}
+									setInputText={setPhoneNumber}
 									secureTextEntry={false}
 								/>
 								<Input
 									max_words={500}
 									label="Adres email"
-									inputText={name}
-									setInputText={setName}
+									inputText={email}
+									setInputText={setEmail}
 									secureTextEntry={false}
 								/>
 								<Input
@@ -85,7 +128,7 @@ const ModifyData = () => {
 									secureTextEntry={true}
 								/>
 								<Button
-									onPress={() => navigation.navigate('myAcc')}
+									onPress={modifyData}
 									width={324}
 									height={44}
 									text="Zapisz zmiany"

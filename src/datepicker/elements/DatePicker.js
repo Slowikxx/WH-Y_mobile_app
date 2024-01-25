@@ -2,8 +2,7 @@ import React, { createContext, useReducer, useContext, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { Calendar } from './components/Calendar';
-import { SelectMonth } from './components/SelectMonth';
+import { Calendar, SelectMonth } from './components';
 import { utils } from '../utils';
 
 const options = {

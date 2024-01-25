@@ -1,167 +1,225 @@
-import { useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, Platform } from 'react-native';
-import { Input, Button, IOSButtons } from '../components';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { useState, useContext } from 'react';
+import {
+	StyleSheet,
+	View,
+	Text,
+	ScrollView,
+	Keyboard,
+	TouchableWithoutFeedback,
+	ImageBackground,
+	Alert,
+} from 'react-native';
+import { Input, Button, PickDate } from '../components';
 import { Feather } from '@expo/vector-icons';
+import { useNavigation } from 'expo-router';
+import { ThemeContext } from './_layout';
+import { supabase } from '../lib/supabase';
 
-const Register = ({ name, setName, password, setPassword }: any) => {
-	const [date, setDate] = useState(new Date());
-	const [dateString, setDateString] = useState('');
+const Register = ({ showLogin, setShowLogin }: any) => {
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [pesel, setPesel] = useState('');
+	const [city, setCity] = useState('');
+	const [street, setStreet] = useState('');
+	const [postalCode, setPostalCode] = useState('');
+	const [phoneNumber, setPhoneNumber] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [birthdate, setBirthdate] = useState('');
 	const [showDatePicker, setShowDatePicker] = useState(false);
 
-	const toggleDatePicker = () => {
-		setShowDatePicker(!showDatePicker);
-	};
+	const [loading, setLoading] = useState(false);
+	const navigation = useNavigation();
+	const { colorScheme } = useContext(ThemeContext);
 
-	const onChangeDate = ({ type }: any, selectedDate: any) => {
-		if (type === 'set') {
-			const currentDate = selectedDate;
-			setDate(currentDate);
+	async function signUpWithEmail() {
+		setLoading(true);
 
-			if (Platform.OS === 'android') {
-				toggleDatePicker();
-				setDate(currentDate);
-				setDateString(formatDate(currentDate.toDateString()));
-			}
-		} else {
-			toggleDatePicker();
+		// Sign up the user
+		const {
+			data: { session },
+			error: signUpError,
+		} = await supabase.auth.signUp({
+			email: email,
+			password: password,
+		});
+
+		if (signUpError) {
+			Alert.alert(signUpError.message);
+			setLoading(false);
+			return;
 		}
-	};
 
-	const confirmIOSDate = () => {
-		setDate(date);
-		setDateString(formatDate(date.toDateString()));
-		toggleDatePicker();
-	};
+		// Store additional user information in the database
+		const { error: insertError } = await supabase.from('profiles').upsert([
+			{
+				id: session?.user.id, // Assuming your user table has an 'id' column
+				first_name: firstName,
+				last_name: lastName,
+				pesel: pesel,
+				city: city,
+				street: street,
+				post_code: postalCode,
+				phone_number: phoneNumber,
+				date_of_birth: birthdate,
+				// Add more fields as needed
+			},
+		]);
 
-	const formatDate = (rawDate: string): string => {
-		let formattedDate = new Date(rawDate);
-		let year = formattedDate.getFullYear();
-		let month = formattedDate.getMonth() + 1;
-		let day = formattedDate.getDate();
+		if (insertError) {
+			Alert.alert(insertError.message);
+			setLoading(false);
+			return;
+		}
 
-		month = month < 10 ? `0${month}` : month;
-		day = day < 10 ? `0${day}` : day;
+		// Continue with the rest of your registration logic
 
-		return `${day}-${month}-${year}`;
-	};
+		setLoading(false);
+	}
 
 	return (
-		<ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-			<Input
-				max_words={500}
-				label="Imię / Imiona"
-				inputText={name}
-				setInputText={setName}
-				secureTextEntry={false}
-			/>
-			<Input
-				max_words={500}
-				label="Nazwisko"
-				inputText={name}
-				setInputText={setName}
-				secureTextEntry={false}
-			/>
-			<Input
-				max_words={500}
-				label="Pesel"
-				inputText={password}
-				setInputText={setPassword}
-				secureTextEntry={true}
-			/>
-			<View>
-				<View style={styles.labelContainer}>
-					<Text style={styles.label}>Data urodzenia</Text>
-					<Feather name="info" size={20} color="#168DBF" />
+		<ImageBackground
+			source={
+				colorScheme === 'light'
+					? require('../../assets/images/whylight.png')
+					: require('../../assets/images/whydark.png')
+			}
+			style={styles.bg}
+		>
+			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+				<View style={styles.background}>
+					<ScrollView
+						showsVerticalScrollIndicator={false}
+						style={styles.container}
+					>
+						<Input
+							max_words={500}
+							label="Imię / Imiona"
+							inputText={firstName}
+							setInputText={setFirstName}
+							secureTextEntry={false}
+						/>
+						<Input
+							max_words={500}
+							label="Nazwisko"
+							inputText={lastName}
+							setInputText={setLastName}
+							secureTextEntry={false}
+						/>
+						<Input
+							max_words={500}
+							label="Pesel"
+							inputText={pesel}
+							setInputText={setPesel}
+							secureTextEntry={true}
+						/>
+						<View>
+							<View style={styles.labelContainer}>
+								<Text style={styles.label}>Data urodzenia</Text>
+								<Feather
+									name="info"
+									size={20}
+									color={colorScheme === 'light' ? '#168DBF' : '#33B1E7'}
+								/>
+							</View>
+							<Button
+								onPress={() => setShowDatePicker(true)}
+								width={151}
+								height={44}
+								text={birthdate !== '' ? birthdate : 'dd-mm-rrrr'}
+								backgroundColor={
+									colorScheme === 'light' ? '#BF1616' : '#E74333'
+								}
+								borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
+								btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
+							/>
+						</View>
+						<Input
+							max_words={500}
+							label="Miasto zamieszkania"
+							inputText={city}
+							setInputText={setCity}
+							secureTextEntry={false}
+						/>
+						<Input
+							max_words={500}
+							label="Ulica zamieszkania"
+							inputText={street}
+							setInputText={setStreet}
+							secureTextEntry={false}
+						/>
+						<Input
+							max_words={500}
+							label="Kod pocztowy zamieszkania"
+							inputText={postalCode}
+							setInputText={setPostalCode}
+							secureTextEntry={false}
+						/>
+						<Input
+							max_words={500}
+							label="Numer telefonu"
+							inputText={phoneNumber}
+							setInputText={setPhoneNumber}
+							secureTextEntry={false}
+						/>
+						<Input
+							max_words={500}
+							label="Adres email"
+							inputText={email}
+							setInputText={setEmail}
+							secureTextEntry={false}
+						/>
+						<Input
+							max_words={500}
+							label="Hasło"
+							inputText={password}
+							setInputText={setPassword}
+							secureTextEntry={true}
+						/>
+						<Input
+							max_words={500}
+							label="Powtórz hasło"
+							inputText={password}
+							setInputText={setPassword}
+							secureTextEntry={true}
+						/>
+						<Button
+							onPress={signUpWithEmail}
+							width={320}
+							height={34}
+							text="Zarejestruj się"
+							backgroundColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
+							activeBackgroundColor={
+								colorScheme === 'light' ? '#BF1616' : '#E74333'
+							}
+							active={true}
+							borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
+							btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
+						/>
+						<Text style={styles.text}>Masz już konto?</Text>
+						<Button
+							onPress={() => setShowLogin(true)}
+							width={320}
+							height={34}
+							text="Zaloguj się"
+							backgroundColor="transparent"
+							activeBackgroundColor="transparent"
+							active={true}
+							borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
+							btnTextColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
+						/>
+						{showDatePicker && (
+							<PickDate
+								openDatePicker={showDatePicker}
+								setOpenDatePicker={setShowDatePicker}
+								selectedDate={birthdate}
+								setSelectedDate={setBirthdate}
+							/>
+						)}
+					</ScrollView>
 				</View>
-				<Button
-					onPress={toggleDatePicker}
-					width={151}
-					height={44}
-					text={dateString !== '' ? dateString : 'dd-mm-rrrr'}
-					backgroundColor="#BF1616"
-					borderColor="#BF1616"
-					btnTextColor="#F0EEF0"
-				/>
-			</View>
-			<Input
-				max_words={500}
-				label="Miasto zamieszkania"
-				inputText={name}
-				setInputText={setName}
-				secureTextEntry={false}
-			/>
-			<Input
-				max_words={500}
-				label="Ulica zamieszkania"
-				inputText={name}
-				setInputText={setName}
-				secureTextEntry={false}
-			/>
-			<Input
-				max_words={500}
-				label="Kod pocztowy zamieszkania"
-				inputText={name}
-				setInputText={setName}
-				secureTextEntry={false}
-			/>
-			<Input
-				max_words={500}
-				label="Numer telefonu"
-				inputText={name}
-				setInputText={setName}
-				secureTextEntry={false}
-			/>
-			<Input
-				max_words={500}
-				label="Adres email"
-				inputText={name}
-				setInputText={setName}
-				secureTextEntry={false}
-			/>
-			<Input
-				max_words={500}
-				label="Hasło"
-				inputText={password}
-				setInputText={setPassword}
-				secureTextEntry={true}
-			/>
-			<Input
-				max_words={500}
-				label="Powtórz hasło"
-				inputText={password}
-				setInputText={setPassword}
-				secureTextEntry={true}
-			/>
-			<Text style={styles.text}>Masz już konto?</Text>
-			<Button
-				width={320}
-				height={34}
-				text="Zaloguj się"
-				backgroundColor="transparent"
-				activeBackgroundColor="transparent"
-				active={true}
-				borderColor="#BF1616"
-				btnTextColor="#BF1616"
-			/>
-			{showDatePicker && (
-				<DateTimePicker
-					mode="date"
-					display="spinner"
-					value={date}
-					onChange={onChangeDate}
-					style={styles.picker}
-					textColor="black"
-				/>
-			)}
-
-			{showDatePicker && Platform.OS === 'ios' && (
-				<IOSButtons
-					confirmIOS={confirmIOSDate}
-					togglePicker={toggleDatePicker}
-				/>
-			)}
-		</ScrollView>
+			</TouchableWithoutFeedback>
+		</ImageBackground>
 	);
 };
 
@@ -198,6 +256,14 @@ const styles = StyleSheet.create({
 		height: 150,
 		marginTop: -180,
 		width: 324,
+	},
+	bg: {
+		paddingTop: 20,
+		flex: 1,
+	},
+	background: {
+		height: '100%',
+		alignItems: 'center',
 	},
 });
 

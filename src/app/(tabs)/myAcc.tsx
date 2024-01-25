@@ -1,14 +1,25 @@
 import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Text, ImageBackground } from 'react-native';
-import { useNavigation } from 'expo-router';
+import { Redirect, useNavigation } from 'expo-router';
 import { ThemeContext } from '../_layout';
 import { AccountHeader, Button } from '../../components';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { useAuth } from '../../providers/AuthProvider';
 
 const MyAccount = () => {
 	const navigation = useNavigation();
 	const { colorScheme } = useContext(ThemeContext);
+	const { session, users } = useAuth();
 
+	useEffect(() => {
+		if (!session) {
+			navigation.navigate('index');
+		}
+	}, []);
+
+	if (!session) {
+		return <Redirect href="/" />;
+	}
 	return (
 		<ImageBackground
 			style={{ paddingTop: 20, flex: 1 }}
@@ -52,7 +63,7 @@ const MyAccount = () => {
 						btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
 					/>
 					<Button
-						onPress={() => navigation.navigate('index')}
+						onPress={() => navigation.navigate('cases')}
 						width={324}
 						height={44}
 						text="Moje sprawy"

@@ -1,10 +1,31 @@
 import { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Alert } from 'react-native';
 import { Input, Button } from '../components';
 import { useNavigation } from 'expo-router';
 import { ThemeContext } from './_layout';
+import { supabase } from '../lib/supabase';
 
-const Login = ({ name, setName, password, setPassword }: any) => {
+type LoginData = {
+	email: string;
+	setEmail: (email: string) => void;
+	password: string;
+	setPassword: (password: string) => void;
+	loading: boolean;
+	setLoading: (loading: boolean) => void;
+	showLogin: boolean;
+	setShowLogin: (showLogin: boolean) => void;
+};
+
+const Login = ({
+	email,
+	setEmail,
+	password,
+	setPassword,
+	loading,
+	setLoading,
+	showLogin,
+	setShowLogin,
+}: LoginData) => {
 	const [active, setActive] = useState(false);
 	const navigation = useNavigation();
 	const { colorScheme } = useContext(ThemeContext);
@@ -17,13 +38,25 @@ const Login = ({ name, setName, password, setPassword }: any) => {
 		}
 	}, [password.length]);
 
+	async function signInWithEmail() {
+		setLoading(true);
+		const { error } = await supabase.auth.signInWithPassword({
+			email,
+			password,
+		});
+
+		if (error) Alert.alert(error.message);
+		if (!error) navigation.navigate('myAcc' as never);
+		setLoading(false);
+	}
+
 	return (
 		<View style={styles.container}>
 			<Input
 				max_words={500}
-				label="Numer telefonu / Adres email"
-				inputText={name}
-				setInputText={setName}
+				label="Adres email"
+				inputText={email}
+				setInputText={setEmail}
 				secureTextEntry={false}
 			/>
 			<Input
@@ -35,7 +68,8 @@ const Login = ({ name, setName, password, setPassword }: any) => {
 			/>
 			<View style={styles.btnContainer}>
 				<Button
-					onPress={() => navigation.navigate('myAcc')}
+					onPress={signInWithEmail}
+					disabled={loading}
 					width={70}
 					height={34}
 					text="Dalej"
@@ -69,6 +103,7 @@ const Login = ({ name, setName, password, setPassword }: any) => {
 				Nie masz jeszcze konta?
 			</Text>
 			<Button
+				onPress={() => setShowLogin(false)}
 				width={320}
 				height={34}
 				text="Zarejestruj się"

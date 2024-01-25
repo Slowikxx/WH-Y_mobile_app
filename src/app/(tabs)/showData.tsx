@@ -10,6 +10,7 @@ import { Feather } from '@expo/vector-icons';
 import { AccountHeader, Button } from '../../components';
 import { ThemeContext } from '../_layout';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { useAuth } from '../../providers/AuthProvider';
 
 const SingleData = ({ label, text }: any) => {
 	const { colorScheme } = useContext(ThemeContext);
@@ -53,6 +54,7 @@ const SingleData = ({ label, text }: any) => {
 };
 
 const ShowData = () => {
+	const { session, users } = useAuth();
 	const { colorScheme } = useContext(ThemeContext);
 
 	return (
@@ -81,9 +83,15 @@ const ShowData = () => {
 						/>
 
 						<Animated.View entering={FadeInDown.duration(300)}>
-							<SingleData label="Imię / Imiona" text="Jan" />
-							<SingleData label="Nazwisko" text="Kowalski" />
-							<SingleData label="PESEL" text="***********" />
+							<SingleData
+								label="Imię / Imiona"
+								text={session && users[0]['first_name']}
+							/>
+							<SingleData
+								label="Nazwisko"
+								text={session && users[0]['last_name']}
+							/>
+							<SingleData label="PESEL" text={session && users[0]['pesel']} />
 							<View>
 								<View style={styles.labelContainer}>
 									<Text style={styles.label}>Data urodzenia</Text>
@@ -91,17 +99,32 @@ const ShowData = () => {
 								<Button
 									width={151}
 									height={44}
-									text={'dd-mm-rrrr'}
+									text={session && users[0]['date_of_birth']}
 									backgroundColor="#BF1616"
 									borderColor="#BF1616"
 									btnTextColor="#F0EEF0"
 								/>
 							</View>
-							<SingleData label="Miasto zamieszkania" text="Kraków" />
-							<SingleData label="Ulica zamieszkania" text="Czarnowiejska" />
-							<SingleData label="Kod pocztowy zamieszkania" text="20-122" />
-							<SingleData label="Numer telefonu" text="+48 123 456 789" />
-							<SingleData label="Adres email" text="kowalski@gmail.com" />
+							<SingleData
+								label="Miasto zamieszkania"
+								text={session && users[0]['city']}
+							/>
+							<SingleData
+								label="Ulica zamieszkania"
+								text={session && users[0]['street']}
+							/>
+							<SingleData
+								label="Kod pocztowy zamieszkania"
+								text={session && users[0]['post_code']}
+							/>
+							<SingleData
+								label="Numer telefonu"
+								text={session && users[0]['phone_number']}
+							/>
+							<SingleData
+								label="Adres email"
+								text={session && session['user']['email']}
+							/>
 						</Animated.View>
 					</View>
 				</View>

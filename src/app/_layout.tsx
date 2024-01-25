@@ -2,6 +2,7 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useState, useEffect, createContext } from 'react';
 import { ImageBackground } from 'react-native';
+import AuthProvider from '../providers/AuthProvider';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -40,17 +41,19 @@ function RootLayoutNav() {
 	const [colorScheme, setColorScheme] = useState('light');
 
 	return (
-		<ThemeContext.Provider value={{ colorScheme, setColorScheme }}>
-			<Stack>
-				<Stack.Screen
-					name="(tabs)"
-					options={{
-						headerShown: false,
-						headerTitle: '',
-						statusBarColor: colorScheme === 'light' ? '#8D0808' : '#E74333',
-					}}
-				/>
-			</Stack>
-		</ThemeContext.Provider>
+		<AuthProvider>
+			<ThemeContext.Provider value={{ colorScheme, setColorScheme }}>
+				<Stack>
+					<Stack.Screen
+						name="(tabs)"
+						options={{
+							headerShown: false,
+							headerTitle: '',
+							statusBarColor: colorScheme === 'light' ? '#8D0808' : '#E74333',
+						}}
+					/>
+				</Stack>
+			</ThemeContext.Provider>
+		</AuthProvider>
 	);
 }
