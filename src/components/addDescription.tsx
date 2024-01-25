@@ -4,50 +4,36 @@ import { StyleSheet, View } from 'react-native';
 import Button from './button';
 import Input from './input';
 
-const AddDescription = () => {
-	const [description, setDescription] = useState<any>('');
+const AddDescription = ({ description, setDescription }: any) => {
 	const [showDescription, setShowDescription] = useState(false);
-	const [descriptions, setDescriptions] = useState<any>([]);
 	const { colorScheme } = useContext(ThemeContext);
-
-	const handleDescriptionPress = () => {
-		setShowDescription(true);
-		setDescriptions([...descriptions, description]);
-	};
-
-	const handleDeleteDescription = () => {
-		setDescriptions(descriptions.slice(0, -1));
-		if (descriptions.length === 1) {
-			setShowDescription(false);
-		}
-	};
 
 	return (
 		<View>
-			<Button
-				onPress={handleDescriptionPress}
-				width={324}
-				height={44}
-				text="Dodaj krótki opis"
-				backgroundColor={colorScheme === 'light' ? '#168DBF' : '#33B1E7'}
-				borderColor={colorScheme === 'light' ? '#168DBF' : '#33B1E7'}
-				btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
-			/>
+			{!showDescription && (
+				<Button
+					onPress={() => setShowDescription(true)}
+					width={324}
+					height={44}
+					text="Dodaj krótki opis"
+					backgroundColor={colorScheme === 'light' ? '#168DBF' : '#33B1E7'}
+					borderColor={colorScheme === 'light' ? '#168DBF' : '#33B1E7'}
+					btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
+				/>
+			)}
+
 			{showDescription && (
 				<View>
-					{descriptions.map((description, index) => (
-						<Input
-							max_words={500}
-							label={'Krótki opis zdarzenia #' + (index + 1)}
-							inputText={description}
-							setInputText={setDescription}
-							secureTextEntry={false}
-							key={index}
-						/>
-					))}
+					<Input
+						max_words={500}
+						label={'Krótki opis zdarzenia'}
+						inputText={description}
+						setInputText={setDescription}
+						secureTextEntry={false}
+					/>
 
 					<Button
-						onPress={handleDeleteDescription}
+						onPress={() => setShowDescription(false)}
 						width={324}
 						height={44}
 						text="Usuń opis"

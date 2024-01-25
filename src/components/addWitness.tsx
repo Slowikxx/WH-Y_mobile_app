@@ -2,20 +2,27 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import AddToForm from './addToForm';
 
-const AddWitness = () => {
+const AddWitness = ({
+	witnessName,
+	setWitnessName,
+	witnessSurname,
+	setWitnessSurname,
+	witnessPhone,
+	setWitnessPhone,
+}: any) => {
 	const [showOptions, setShowOptions] = useState(false);
-	const [witness, setWitness] = useState('');
-	const [witnesses, setWitnesses] = useState([]);
 
 	return (
 		<View>
 			<AddToForm
-				showOptions={showOptions}
-				setShowOptions={setShowOptions}
-				option={witness}
-				setOption={setWitness}
-				options={witnesses}
-				setOptions={setWitnesses}
+				option={showOptions}
+				setOption={setShowOptions}
+				firstOption={witnessName}
+				setFirstOption={setWitnessName}
+				secondOption={witnessSurname}
+				setSecondOption={setWitnessSurname}
+				thirdOption={witnessPhone}
+				setThirdOption={setWitnessPhone}
 				firstButtonText="Dodaj świadka"
 				secondButtonText="Usuń świadka"
 				firstLabel="Imię / Imiona świadka"

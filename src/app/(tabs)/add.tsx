@@ -35,15 +35,30 @@ export default function TabOneScreen() {
 	// const [password, setPassword] = useState('');
 	const [date, setDate] = useState('');
 	const [time, setTime] = useState(new Date());
-	const [localization, setLocalization] = useState(session && profile ? profile.city : '')
-	const [desc, setDesc] = useState<string[]>([])
-	const [crime, setCrime] = useState<string[]>([])
-	const [offence, setOffence] = useState<string[]>([])
-	const [applicant, setApplicant] = useState<string[]>([])
+	const [location, setLocation] = useState<string>('');
+
+	//Add place
+	const [street, setStreet] = useState<string>('');
+	const [city, setCity] = useState<string>('');
+	const [post_code, setPostCode] = useState<string>('');
+	const [desc, setDesc] = useState<string>('');
+
+	//Add witness
+	const [witnessName, setWitnessName] = useState<string>('');
+	const [witnessSurname, setWitnessSurname] = useState<string>('');
+	const [witnessPhone, setWitnessPhone] = useState<string>('');
+
+	//Add culprit
+	const [culpritName, setCulpritName] = useState<string>('');
+	const [culpritSurname, setCulpritSurname] = useState<string>('');
+	const [culpritPhone, setCulpritPhone] = useState<string>('');
 
 	const [timeString, setTimeString] = useState('');
 	const [showDatePicker, setShowDatePicker] = useState(false);
 	const [showTimePicker, setShowTimePicker] = useState(false);
+
+	//Description
+	const [description, setDescription] = useState<string>('');
 
 	const { colorScheme } = useContext(ThemeContext);
 
@@ -224,7 +239,7 @@ export default function TabOneScreen() {
 								</View>
 							)}
 
-							<Location />
+							<Location location={location} setLocation={setLocation} />
 							<Text
 								style={[
 									styles.mdText,
@@ -235,9 +250,32 @@ export default function TabOneScreen() {
 							>
 								lub
 							</Text>
-							<AddPlace />
-							<AddWitness />
-							<AddCulprit />
+							<AddPlace
+								city={city}
+								street={street}
+								postCode={post_code}
+								desc={desc}
+								setCity={setCity}
+								setPostCode={setPostCode}
+								setStreet={setStreet}
+								setDesc={setDesc}
+							/>
+							<AddWitness
+								witnessName={witnessName}
+								setWitnessName={setWitnessName}
+								witnessSurname={witnessSurname}
+								setWitnessSurname={setWitnessSurname}
+								witnessPhone={witnessPhone}
+								setWitnessPhone={setWitnessPhone}
+							/>
+							<AddCulprit
+								culpritName={culpritName}
+								setCulpritName={setCulpritName}
+								culpritSurname={culpritSurname}
+								setCulpritSurname={setCulpritSurname}
+								culpritPhone={culpritPhone}
+								setCulpritPhone={setCulpritPhone}
+							/>
 							<Dropdown mainText="Wybierz typ przestępstwa" type="crime" />
 							<Dropdown mainText="Wybierz typ wykroczenia" type="offense" />
 							<Text
@@ -250,7 +288,10 @@ export default function TabOneScreen() {
 							>
 								lub
 							</Text>
-							<AddDescription />
+							<AddDescription
+								description={description}
+								setDescription={setDescription}
+							/>
 							<FilePicker />
 							{/* <Input
 								max_words={500}

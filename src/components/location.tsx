@@ -5,8 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import * as Loc from 'expo-location';
 import { ThemeContext } from '../app/_layout';
 
-const Location = () => {
-	const [location, setLocation] = useState<any>();
+const Location = ({ location, setLocation }: any) => {
 	const { colorScheme } = useContext(ThemeContext);
 
 	const getLocation = () => {

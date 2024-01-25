@@ -3,32 +3,27 @@ import { View, Text } from 'react-native';
 import { ThemeContext } from '../app/_layout';
 import AddToForm from './addToForm';
 
-const AddCulprit = () => {
+const AddCulprit = ({
+	culpritName,
+	setCulpritName,
+	culpritSurname,
+	setCulpritSurname,
+	culpritPhone,
+	setCulpritPhone,
+}: any) => {
 	const [showOptions, setShowOptions] = useState(false);
-	const [culprit, setCulprit] = useState('');
-	const [culprits, setCulprits] = useState([]);
-
-	const handlePress = () => {
-		setShowOptions(true);
-		setCulprits([...culprits, culprit]);
-	};
-
-	const handleDelete = () => {
-		setCulprits(culprits.slice(0, -1));
-		if (culprits.length === 1) {
-			setShowOptions(false);
-		}
-	};
 
 	return (
 		<View>
 			<AddToForm
-				showOptions={showOptions}
-				setShowOptions={setShowOptions}
-				option={culprit}
-				setOption={setCulprits}
-				options={culprits}
-				setOptions={setCulprits}
+				option={showOptions}
+				setOption={setShowOptions}
+				firstOption={culpritName}
+				setFirstOption={setCulpritName}
+				secondOption={culpritSurname}
+				setSecondOption={setCulpritSurname}
+				thirdOption={culpritPhone}
+				setThirdOption={setCulpritPhone}
 				firstButtonText="Dodaj sprawcę"
 				secondButtonText="Usuń sprawcę"
 				firstLabel="Imię / Imiona sprawcy"
