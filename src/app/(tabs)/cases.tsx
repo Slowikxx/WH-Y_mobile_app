@@ -125,11 +125,19 @@ export default function Cases() {
 					<SearchBar />
 					{simpleCases?.map((simpleCase, index) => (
 						<Status
+							title={simpleCase.desc}
 							key={index}
 							iconName={caseIcon(simpleCase.status)}
 							bgColor={caseColor(simpleCase.status)}
 							textColor={caseColor(simpleCase.status)}
 							statusText={simpleCase.status}
+							date={simpleCase.date}
+							time={simpleCase.time}
+							desc={simpleCase.desc}
+							place={`${simpleCase.l_city}, ${simpleCase.l_street} ${simpleCase.l_post_code}`}
+							location={simpleCase.location}
+							witness={simpleCase.w_first_name + ' ' + simpleCase.w_last_name}
+							suspect={simpleCase.s_first_name + ' ' + simpleCase.s_last_name}
 						/>
 					))}
 					{/* <Status

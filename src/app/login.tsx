@@ -10,10 +10,7 @@ type LoginData = {
 	setShowLogin: (showLogin: boolean) => void;
 };
 
-const Login = ({
-	showLogin,
-	setShowLogin
-}: LoginData) => {
+const Login = ({ showLogin, setShowLogin }: LoginData) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -33,7 +30,7 @@ const Login = ({
 		setLoading(true);
 		const { error } = await supabase.auth.signInWithPassword({
 			email,
-			password
+			password,
 		});
 
 		if (error) Alert.alert(error.message);
@@ -61,9 +58,9 @@ const Login = ({
 				<Button
 					onPress={signInWithEmail}
 					disabled={loading}
-					width={70}
+					width={100}
 					height={34}
-					text={ loading ? "Logowanie" : "Zaloguj"}
+					text={loading ? 'Logowanie' : 'Zaloguj'}
 					backgroundColor={colorScheme === 'light' ? '#B8B2B8' : '#453845'}
 					activeBackgroundColor={
 						colorScheme === 'light' ? '#BF1616' : '#E74333'

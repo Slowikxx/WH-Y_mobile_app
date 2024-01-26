@@ -33,7 +33,7 @@ import { supabase } from '../../lib/supabase';
 import { useNavigation } from 'expo-router';
 
 export default function TabOneScreen() {
-	const { session, profile } = useAuth(); //??
+	const { session, profile } = useAuth();
 
 	// const [password, setPassword] = useState('');
 	const [date, setDate] = useState('');

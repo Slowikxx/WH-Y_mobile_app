@@ -11,6 +11,14 @@ const ExpandedStatus = ({
 	setNotify,
 	expanded,
 	setExpanded,
+	title,
+	desc,
+	date,
+	time,
+	place,
+	location,
+	witness,
+	suspect,
 }: any) => {
 	const { colorScheme } = useContext(ThemeContext);
 
@@ -36,7 +44,7 @@ const ExpandedStatus = ({
 						{ color: colorScheme === 'light' ? '#594E59' : '#978E97' },
 					]}
 				>
-					Title
+					{title.substring(0, 10) + '...'}
 				</Text>
 				<Pressable onPress={() => setExpanded(false)}>
 					<Feather name="x" size={20} color={textColor} />
@@ -81,11 +89,10 @@ const ExpandedStatus = ({
 							{ color: colorScheme === 'light' ? '#594E59' : '#978E97' },
 						]}
 					>
-						Name of the unit:
+						Nazwa jednostki:
 					</Text>
 					<Text style={[styles.paragraph, { color: '#6D646D' }]}>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						Pierwsza Komenda policji miejskiej w Krakowie
 					</Text>
 				</View>
 				<View>
@@ -95,10 +102,10 @@ const ExpandedStatus = ({
 							{ color: colorScheme === 'light' ? '#594E59' : '#978E97' },
 						]}
 					>
-						Name of the receiver:
+						Nazwisko Odbierającego:
 					</Text>
 					<Text style={[styles.paragraph, { color: '#6D646D' }]}>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+						Nadkomisarz Maryla Śmietana
 					</Text>
 				</View>
 				<View>
@@ -108,16 +115,14 @@ const ExpandedStatus = ({
 							{ color: colorScheme === 'light' ? '#594E59' : '#978E97' },
 						]}
 					>
-						Other informations:
+						Inne informacje:
 					</Text>
 					<Text style={[styles.paragraph, { color: '#6D646D' }]}>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-						ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-						aliquip ex ea commodo consequat. Duis aute irure dolor in
-						reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-						pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-						culpa qui officia deserunt mollit anim id est laborum.
+						{`Opis: ${desc}\nData i czas wysłania: ${date}, ${time}`}
+						{place.trim() !== '' && `\nMiejsce zdarzenia: ${place}`}
+						{location.trim() !== '' && `\nLokalizacja: ${location}`}
+						{witness.trim() !== '' && `\nŚwiadek: ${witness}`}
+						{suspect.trim() !== '' && `\nPodejrzany: ${suspect}`}
 					</Text>
 				</View>
 			</Animated.View>

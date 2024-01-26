@@ -17,7 +17,20 @@ const Circle = ({ iconName, bgColor }: any) => {
 	);
 };
 
-const Status = ({ iconName, bgColor, textColor, statusText }: any) => {
+const Status = ({
+	iconName,
+	bgColor,
+	textColor,
+	statusText,
+	title,
+	date,
+	time,
+	desc,
+	place,
+	location,
+	witness,
+	suspect,
+}: any) => {
 	const [notify, setNotify] = useState(false);
 	const [expanded, setExpanded] = useState(false);
 	const { colorScheme } = useContext(ThemeContext);
@@ -42,7 +55,7 @@ const Status = ({ iconName, bgColor, textColor, statusText }: any) => {
 								{ color: colorScheme === 'light' ? '#594E59' : '#978E97' },
 							]}
 						>
-							Title
+							{title.substring(0, 10) + '...'}
 						</Text>
 						<Text
 							style={[
@@ -66,12 +79,20 @@ const Status = ({ iconName, bgColor, textColor, statusText }: any) => {
 				</Pressable>
 			) : (
 				<ExpandedStatus
+					title={title}
 					statusText={statusText}
 					textColor={textColor}
 					notify={notify}
 					setNotify={setNotify}
 					expanded={expanded}
 					setExpanded={setExpanded}
+					date={date}
+					time={time}
+					desc={desc}
+					place={place}
+					location={location}
+					witness={witness}
+					suspect={suspect}
 				/>
 			)}
 		</View>
