@@ -184,6 +184,18 @@ export default function TabOneScreen() {
 			}
 			Alert.alert('Pomyślnie zaktualizowano dane');
 			setLoading(false);
+			setLocation('');
+			setStreet('');
+			setCity('');
+			setPostCode('');
+			setDesc('');
+			setWitnessName('');
+			setWitnessSurname('');
+			setWitnessPhone('');
+			setCulpritName('');
+			setCulpritSurname('');
+			setCulpritPhone('');
+			setDescription('');
 			if (session) navigation.navigate('cases' as never);
 		} catch (error) {
 			if (error instanceof Error) {
