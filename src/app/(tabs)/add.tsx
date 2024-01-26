@@ -9,7 +9,7 @@ import {
 	Platform,
 	ScrollView,
 	ImageBackground,
-	Alert
+	Alert,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import {
@@ -30,6 +30,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAuth } from '../../providers/AuthProvider';
 import { Redirect } from 'expo-router';
 import { supabase } from '../../lib/supabase';
+import { useNavigation } from 'expo-router';
 
 export default function TabOneScreen() {
 	const { session, profile } = useAuth(); //??
@@ -63,6 +64,7 @@ export default function TabOneScreen() {
 	const [description, setDescription] = useState<string>('');
 
 	const { colorScheme } = useContext(ThemeContext);
+	const navigation = useNavigation();
 
 	const toggleDatePicker = () => {
 		setShowDatePicker(!showDatePicker);
@@ -108,7 +110,6 @@ export default function TabOneScreen() {
 		return <Redirect href="/" />;
 	}
 
-	
 	const [loading, setLoading] = useState(false);
 	async function insertData({
 		date,
@@ -126,32 +127,31 @@ export default function TabOneScreen() {
 		s_phone_number,
 		w_first_name,
 		w_last_name,
-		w_phone_number
-	} : {
-		date: string,
-		time: string,
-		location: string,
-		desc: string,
-		crime: string,
-		offence: string,
-		l_city: string,
-		l_street: string,
-		l_post_code: string,
-		l_desc: string,
-		s_first_name: string,
-		s_last_name: string,
-		s_phone_number: string,
-		w_first_name: string,
-		w_last_name: string,
-		w_phone_number: string
+		w_phone_number,
+	}: {
+		date: string;
+		time: string;
+		location: string;
+		desc: string;
+		crime: string;
+		offence: string;
+		l_city: string;
+		l_street: string;
+		l_post_code: string;
+		l_desc: string;
+		s_first_name: string;
+		s_last_name: string;
+		s_phone_number: string;
+		w_first_name: string;
+		w_last_name: string;
+		w_phone_number: string;
 	}) {
 		try {
 			setLoading(true);
 			if (!session?.user) throw new Error('No user on the session!');
 
-			if(!date || date == '' || !time || time=='' || desc == '')
-			{
-				throw new Error("Proszę uzupełnić czas i krótki opis zdarzenia")
+			if (!date || date == '' || !time || time == '' || desc == '') {
+				throw new Error('Proszę uzupełnić czas i krótki opis zdarzenia');
 			}
 
 			const updates = {
@@ -171,17 +171,20 @@ export default function TabOneScreen() {
 				s_phone_number: s_phone_number,
 				w_first_name: w_first_name,
 				w_last_name: w_last_name,
-				w_phone_number: w_phone_number
+				w_phone_number: w_phone_number,
 			};
-			const { data, error } = await supabase.from('simpleCases').insert(updates).select();
-			if(!data)
-			{
-				throw new Error("Nie udało się zaktualizować danych")
-			}
-			else if (error) {
+			const { data, error } = await supabase
+				.from('simpleCases')
+				.insert(updates)
+				.select('*');
+			if (!data) {
+				throw new Error('Nie udało się zaktualizować danych');
+			} else if (error) {
 				throw error;
 			}
 			Alert.alert('Pomyślnie zaktualizowano dane');
+			setLoading(false);
+			if (session) navigation.navigate('cases' as never);
 		} catch (error) {
 			if (error instanceof Error) {
 				Alert.alert(error.message);
@@ -386,24 +389,26 @@ export default function TabOneScreen() {
 								secureTextEntry={true}
 							/> */}
 							<Button
-								onPress={() => insertData({
-									date,
-									time: timeString,
-									location,
-									desc: description,
-									crime: 'Przestępstwo',
-									offence: 'Wykroczenie',
-									l_city: city,
-									l_street: street,
-									l_post_code: post_code,
-									l_desc: desc,
-									s_first_name: culpritName,
-									s_last_name: culpritSurname,
-									s_phone_number: culpritPhone,
-									w_first_name: witnessName,
-									w_last_name: witnessSurname,
-									w_phone_number: witnessPhone
-								} )}
+								onPress={() =>
+									insertData({
+										date,
+										time: timeString,
+										location,
+										desc: description,
+										crime: 'Przestępstwo',
+										offence: 'Wykroczenie',
+										l_city: city,
+										l_street: street,
+										l_post_code: post_code,
+										l_desc: desc,
+										s_first_name: culpritName,
+										s_last_name: culpritSurname,
+										s_phone_number: culpritPhone,
+										w_first_name: witnessName,
+										w_last_name: witnessSurname,
+										w_phone_number: witnessPhone,
+									})
+								}
 								width={324}
 								height={44}
 								text="Wyślij sprawę"

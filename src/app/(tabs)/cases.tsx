@@ -13,66 +13,97 @@ export default function Cases() {
 	const [loading, setLoading] = useState(false);
 	const navigation = useNavigation();
 	const { colorScheme } = useContext(ThemeContext);
-	const [simpleCases, setCase] = useState<{
-		id: string,
-		date: string,
-		time: string,
-		location: string,
-		desc: string,
-		crime: string,
-		offence: string,
-		l_city: string,
-		l_street: string,
-		l_post_code: string,
-		l_desc: string,
-		s_first_name: string,
-		s_last_name: string,
-		s_phone_number: string,
-		w_first_name: string,
-		w_last_name: string,
-		w_phone_number: string
-	}[]>([])
-	
+	const [simpleCases, setCase] = useState<
+		{
+			id: string;
+			created_at: string;
+			applicant: string;
+			status: string;
+			date: string;
+			time: string;
+			location: string;
+			desc: string;
+			crime: string;
+			offence: string;
+			l_city: string;
+			l_street: string;
+			l_post_code: string;
+			l_desc: string;
+			s_first_name: string;
+			s_last_name: string;
+			s_phone_number: string;
+			w_first_name: string;
+			w_last_name: string;
+			w_phone_number: string;
+		}[]
+	>([]);
+
 	async function getCases() {
 		try {
-		  setLoading(true)
-		  if (!session?.user) throw new Error('No user on the session!')
-	
-		  const { data, error, status } = await supabase
-			.from('simpleCases')
-			.select('*')
-		  if (error && status !== 406) {
-			throw error
-		  }
-		  setCase(data ?? []);
+			setLoading(true);
+			if (!session?.user) throw new Error('No user on the session!');
+
+			const { data, error, status } = await supabase
+				.from('simpleCases')
+				.select('*');
+			if (error && status !== 406) {
+				throw error;
+			}
+			setCase(data ?? []);
 		} catch (error) {
-		  if (error instanceof Error) {
-			Alert.alert(error.message)
-		  }
+			if (error instanceof Error) {
+				Alert.alert(error.message);
+			}
 		} finally {
-		  setLoading(false)
+			setLoading(false);
 		}
-		// console.log("test")
-		// if(simpleCases[0])
-		// {
-		// 	simpleCases.forEach(simpleCase => {
-		// 		console.log(simpleCase.id)
-		// 		console.log(simpleCase.desc)
-		// 	});
-		// }
-		// console.log("test3")
-	  }
+	}
 
 	useEffect(() => {
-		if(session) getCases()
+		if (session) getCases();
 	}, []);
-	useEffect(() => {
-		if(session) getCases()
-	}, [session]);
 
 	if (!session) {
 		return <Redirect href="/" />;
 	}
+
+	const caseColor = (status: string) => {
+		switch (status) {
+			case 'wysłana':
+				return '#6D646D';
+			case 'w toku':
+				return '#16AAEA';
+			case 'umorzona':
+				return '#DC1F0D';
+			case 'nieprzyjęta':
+				return '#F0B812';
+			case 'zrealizowana':
+				return '#00CC1D';
+			case 'fałszywe zgłoszenie':
+				return '#171017';
+			default:
+				return '#16AAEA';
+		}
+	};
+
+	const caseIcon = (status: string) => {
+		switch (status) {
+			case 'wysłana':
+				return '';
+			case 'w toku':
+				return 'more-horizontal';
+			case 'umorzona':
+				return 'alert-triangle';
+			case 'nieprzyjęta':
+				return 'x';
+			case 'zrealizowana':
+				return 'check';
+			case 'fałszywe zgłoszenie':
+				return 'lock';
+			default:
+				return 'more-horizontal';
+		}
+	};
 
 	return (
 		<ImageBackground
@@ -91,12 +122,17 @@ export default function Cases() {
 					entering={FadeInDown.duration(300)}
 					style={styles.container}
 				>
-					<Button
-						onPress={() => getCases()}	
-					>
-					</Button>
 					<SearchBar />
-					<Status 
+					{simpleCases?.map((simpleCase, index) => (
+						<Status
+							key={index}
+							iconName={caseIcon(simpleCase.status)}
+							bgColor={caseColor(simpleCase.status)}
+							textColor={caseColor(simpleCase.status)}
+							statusText={simpleCase.status}
+						/>
+					))}
+					{/* <Status
 						iconName="more-horizontal"
 						bgColor="#16AAEA"
 						textColor="#16AAEA"
@@ -119,7 +155,8 @@ export default function Cases() {
 						bgColor="#00CC1D"
 						textColor="#00CC1D"
 						statusText="zrealizowany"
-					/>
+					/> */}
+					<Button title="Odśwież" onPress={() => getCases()} />
 				</Animated.View>
 			</ScrollView>
 		</ImageBackground>
