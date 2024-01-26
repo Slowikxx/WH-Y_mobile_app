@@ -1,21 +1,42 @@
 import { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, Text, ImageBackground } from 'react-native';
+import { StyleSheet, View, ImageBackground, Alert } from 'react-native';
 import { Redirect, useNavigation } from 'expo-router';
 import { ThemeContext } from '../_layout';
 import { AccountHeader, Button } from '../../components';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAuth } from '../../providers/AuthProvider';
+import { supabase } from '../../lib/supabase';
 
 const MyAccount = () => {
 	const navigation = useNavigation();
 	const { colorScheme } = useContext(ThemeContext);
 	const { session } = useAuth();
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		if (!session) {
 			navigation.navigate('index');
 		}
 	}, [session]);
+
+	async function delUser() {
+		try {
+			setLoading(true);
+			if (!session?.user) throw new Error('No user on the session!');
+			const { error } = await supabase.rpc('delete_user');
+			if (error) {
+				throw error;
+			}
+			setLoading(false);
+			await supabase.auth.signOut();
+		} catch (error) {
+			if (error instanceof Error) {
+				Alert.alert(error.message);
+			}
+		} finally {
+			setLoading(false);
+		}
+	}
 
 	if (!session) {
 		return <Redirect href="/" />;
@@ -71,14 +92,15 @@ const MyAccount = () => {
 						borderColor={colorScheme === 'light' ? '#168DBF' : '#33B1E7'}
 						btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
 					/>
-					{/* <Button
+					<Button
+						onPress={delUser}
 						width={324}
 						height={44}
 						text="Usuń konto"
 						backgroundColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 						borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
 						btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
-					/> */}
+					/>
 				</View>
 			</Animated.View>
 		</ImageBackground>

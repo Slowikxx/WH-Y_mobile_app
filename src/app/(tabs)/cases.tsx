@@ -6,7 +6,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAuth } from '../../providers/AuthProvider';
 import { Redirect, useNavigation } from 'expo-router';
 import { supabase } from '../../lib/supabase';
-import { Button } from 'react-native-elements';
+import { Button } from '../../components';
 
 export default function Cases() {
 	const { session, profile } = useAuth();
@@ -156,7 +156,15 @@ export default function Cases() {
 						textColor="#00CC1D"
 						statusText="zrealizowany"
 					/> */}
-					<Button title="Odśwież" onPress={() => getCases()} />
+					<Button
+						onPress={getCases}
+						width={324}
+						height={44}
+						text="Odśwież"
+						backgroundColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
+						borderColor={colorScheme === 'light' ? '#BF1616' : '#E74333'}
+						btnTextColor={colorScheme === 'light' ? '#F0EEF0' : '#171017'}
+					/>
 				</Animated.View>
 			</ScrollView>
 		</ImageBackground>
